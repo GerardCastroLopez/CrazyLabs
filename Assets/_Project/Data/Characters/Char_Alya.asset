@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 32
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36c21d73533141c1a5e54ebccd24d6c, type: 3}
+  m_Name: Char_Alya
+  m_EditorClassIdentifier: 
+  displayName: Alya
+  modelPrefab: {fileID: 3288545667065426639, guid: e3f9e284091d54c2bb51375e9c43ed28, type: 3}
+  voice: 0
+  selectSound: {fileID: 8300000, guid: 29fd4bea7db184f0c93f50dea2ec3abe, type: 3}
+  launchClips:
+  - {fileID: 7400000, guid: 637c640864f032047b89966e1161d76f, type: 3}
+  - {fileID: 7400000, guid: 82e058271a4fd814c9ade627cf45fb2a, type: 3}
+  - {fileID: 7400000, guid: 4123cd3c72098904ead420eaa4696ac8, type: 3}
+  - {fileID: 7400000, guid: 77a16134076207a48b960fc44c6e4dac, type: 3}
+  crashClips:
+  - {fileID: 7400000, guid: d7be373945c32624aa76f7d855224177, type: 3}
+  victoryClips:
+  - {fileID: 7400000, guid: b9d04b5a1cc57304daf706ae6b50b963, type: 3}
+  - {fileID: 7400000, guid: a6538e6fa9fa0264cb66c1c26315070b, type: 3}

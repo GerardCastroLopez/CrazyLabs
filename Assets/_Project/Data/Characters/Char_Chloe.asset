@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 32
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36c21d73533141c1a5e54ebccd24d6c, type: 3}
+  m_Name: Char_Chloe
+  m_EditorClassIdentifier: 
+  displayName: Chloe
+  modelPrefab: {fileID: 3888748766227353558, guid: 1944aaa2bfee24c4d8f48e8a41773446, type: 3}
+  voice: 0
+  selectSound: {fileID: 8300000, guid: 551dfabca243c4826b4e789927865b6c, type: 3}
+  launchClips:
+  - {fileID: 7400000, guid: 79c642f96b3f4d64cb81425c5db89c80, type: 3}
+  - {fileID: 7400000, guid: 0059437775fb1cc47b8d9c239aaa39fc, type: 3}
+  - {fileID: 7400000, guid: a9c168e1615436c4992ca81b36ca8cd9, type: 3}
+  - {fileID: 7400000, guid: f32134b9cce6a354895f88cf5f107cbc, type: 3}
+  crashClips:
+  - {fileID: 7400000, guid: 91c0054c38f997d419d989c97b51177a, type: 3}
+  victoryClips:
+  - {fileID: 7400000, guid: 5cad55bf8a023f246a0f734f77223eb8, type: 3}

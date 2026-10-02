@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 32
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af060393a6e548ab9a81940ebed9beb, type: 3}
+  m_Name: Level_Louvre
+  m_EditorClassIdentifier: 
+  displayName: Louvre
+  layout: {fileID: 11400000, guid: d9860fcdd035143e388cdc6c6f68cd66, type: 2}
+  trackMaterial: {fileID: 2100000, guid: 108e58d0962724aa0bf181a4e3b4db0f, type: 2}
+  surroundMaterial: {fileID: 2100000, guid: 56841dee5934745579938e5b18a09bea, type: 2}
+  skyColor: {r: 0.95, g: 0.82, b: 0.62, a: 1}
+  ambientColor: {r: 0.72, g: 0.64, b: 0.55, a: 1}
+  sunColor: {r: 1, g: 0.88, b: 0.7, a: 1}
+  fogStart: 70
+  fogEnd: 230
+  crashObstacles:
+  - {fileID: 2894539590957533729, guid: 370052ea62b034c2cb87862c77044e20, type: 3}
+  - {fileID: 769761599081607123, guid: 11c0dcb3b47614ffdb3d3b343ce6fed4, type: 3}
+  - {fileID: 2775634526936860167, guid: e12a821b77fe745948c1c6ffa3a5f8e3, type: 3}
+  - {fileID: 8936746295739007755, guid: 77303e6c5ce564fc7b7e546bf819c414, type: 3}
+  slowObstacles:
+  - {fileID: 8441421672194634764, guid: f4af9780a95384baa87e542c925e2c62, type: 3}
+  - {fileID: 7650404457325782430, guid: e9c9732726858454e8602213f5371f06, type: 3}
+  - {fileID: 3462034631412878799, guid: 4011893aeda2546809eb797d1947d95e, type: 3}
+  scenery:
+  - {fileID: 1591895259457344932, guid: 69161cb72b193462f988c122004263c5, type: 3}
+  - {fileID: 8022313039189967645, guid: 2a4844fe2ae894a4e8db1b1daec63d61, type: 3}
+  ambientEffect: {fileID: 0}

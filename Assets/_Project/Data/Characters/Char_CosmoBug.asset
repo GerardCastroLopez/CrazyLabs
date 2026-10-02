@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 32
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36c21d73533141c1a5e54ebccd24d6c, type: 3}
+  m_Name: Char_CosmoBug
+  m_EditorClassIdentifier: 
+  displayName: Cosmo Bug
+  modelPrefab: {fileID: 2522222930308900727, guid: 593a99522ad1f4695bb25041b0755c32, type: 3}
+  voice: 0
+  selectSound: {fileID: 8300000, guid: 608dc58f0b5f9407cb6c0b366f7cdccb, type: 3}
+  launchClips:
+  - {fileID: 1827226128182048838, guid: 452b0ddf230b57a46b39a4b2f40a2a8c, type: 3}
+  - {fileID: 5761707980282091517, guid: f539977598c7afb46be1418ba10f47d3, type: 3}
+  - {fileID: -1159369711407815485, guid: 7849b9c98ffd3054b902efe579b473af, type: 3}
+  - {fileID: -773096531592271908, guid: 3a514bcb0f67c2140afd5b4b27ddf1b1, type: 3}
+  crashClips:
+  - {fileID: 1827226128182048838, guid: f2aa608c72cbcc4419ad3d4e776a84fc, type: 3}
+  - {fileID: 1827226128182048838, guid: 2049142854fafc64fb0c5b6d95ac99df, type: 3}
+  - {fileID: 1827226128182048838, guid: cd989191d7d1d8242830c9ea15e46cb0, type: 3}
+  victoryClips:
+  - {fileID: 1827226128182048838, guid: b2e60a128f461d84d9c3235531ad3f49, type: 3}

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 32
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36c21d73533141c1a5e54ebccd24d6c, type: 3}
+  m_Name: Char_QueenBee
+  m_EditorClassIdentifier: 
+  displayName: Queen Bee
+  modelPrefab: {fileID: 2640041067794392838, guid: 7a2b2b51728ab4649b7a355c23e23a17, type: 3}
+  voice: 0
+  selectSound: {fileID: 8300000, guid: 7a4d9e063c09142fbbbfd71f1850358c, type: 3}
+  launchClips:
+  - {fileID: 7400000, guid: a2ef988c46843614fa5565b070e11ec7, type: 3}
+  - {fileID: 7400000, guid: 833246225896eb34ca2376190cc8fdfe, type: 3}
+  - {fileID: 7400000, guid: 13ffe393cd2dfd7479571b85411f1d67, type: 3}
+  - {fileID: 7400000, guid: 3464f0493af526748835924616584766, type: 3}
+  crashClips:
+  - {fileID: 7400000, guid: d7b506b32f200bd44b15afb092d54f48, type: 3}
+  - {fileID: 7400000, guid: f53619d345b6eed499a973ea1c107a62, type: 3}
+  victoryClips:
+  - {fileID: 7400000, guid: 842addd504b0d69498b933eb15ed14bd, type: 3}
