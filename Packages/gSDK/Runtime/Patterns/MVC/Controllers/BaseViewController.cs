@@ -39,7 +39,7 @@ namespace gSDK.MVC
                 if (!View)
                 {
                     Debug.LogError($"Binding incompatibility: {go.name} doesn't contain a view {typeof(TView).Name} for the controller {GetType().Name}");
-                    Object.Destroy(go);
+                    AddressableInstance.ReleaseOrDestroy(go);
                     return;
                 }
 

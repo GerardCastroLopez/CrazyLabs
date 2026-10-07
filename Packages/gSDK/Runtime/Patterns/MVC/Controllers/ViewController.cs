@@ -1,6 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace gSDK.MVC
 {
@@ -19,10 +18,9 @@ namespace gSDK.MVC
             View?.transform.SetParent(_parentTr, false);
         }
 
-        protected override async UniTask<GameObject> InstantiateAsync()
+        protected override UniTask<GameObject> InstantiateAsync()
         {
-            var prefab = await Addressables.LoadAssetAsync<GameObject>(_viewRef).Task.AsUniTask();
-            return Object.Instantiate(prefab, _parentTr);
+            return AddressableInstance.Instantiate(_viewRef, _parentTr);
         }
     }
 
