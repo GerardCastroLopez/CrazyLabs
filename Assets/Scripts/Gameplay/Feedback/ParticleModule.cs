@@ -1,0 +1,182 @@
+using System;
+using System.Collections.Generic;
+using CrazyLabs.Gameplay.Config;
+using CrazyLabs.Gameplay.Events;
+using CrazyLabs.Gameplay.Track;
+using Cysharp.Threading.Tasks;
+using gSDK.EventSystem;
+using gSDK.Patterns.Pooling;
+using UnityEngine;
+using Object = UnityEngine.Object;
+
+namespace CrazyLabs.Gameplay.Feedback
+{
+    public class ParticleModule : IEventHandler<CollectibleCollectedEvent>, IEventHandler<ObstacleHitEvent>, IEventHandler<RunEndedEvent>
+    {
+        private readonly Transform _player;
+        private readonly EffectsTuningData _tuning;
+        private readonly Dictionary<GameObject, ComponentPool<Transform>> _pools = new();
+        private readonly List<GameObject> _templates = new();
+        private readonly ParticleSystem[] _trail;
+        private readonly float[] _trailBaseRates;
+
+        private bool _disposed;
+
+
+        public ParticleModule(Transform player, EffectsTuningData tuning)
+        {
+            _player = player;
+            _tuning = tuning;
+
+            _trail = CreateTrail(out _trailBaseRates);
+
+            EventDispatcher.Register(this);
+        }
+
+        public void Tick(bool sliding, float speedNormalized)
+        {
+            for (int i = 0; i < _trail.Length; i++)
+            {
+                var system = _trail[i];
+
+                if (!sliding)
+                {
+                    if (system.isEmitting)
+                    {
+                        system.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                    }
+                    continue;
+                }
+
+                if (!system.isPlaying)
+                {
+                    system.Play();
+                }
+
+                var emission = system.emission;
+                emission.rateOverTimeMultiplier = _trailBaseRates[i] * Mathf.Lerp(_tuning.TrailIntensity.x, _tuning.TrailIntensity.y, speedNormalized);
+            }
+        }
+
+        public void Handle(CollectibleCollectedEvent evt)
+        {
+            PlayOneShot(_tuning.PickupEffect, evt.Position).Forget();
+        }
+
+        public void Handle(ObstacleHitEvent evt)
+        {
+            var effect = evt.Obstacle.Kind == ObstacleKind.Crash ? _tuning.CrashEffect : _tuning.SoftHitEffect;
+            PlayOneShot(effect, evt.Obstacle.transform.position + Vector3.up * _tuning.HitEffectHeight).Forget();
+        }
+
+        public void Handle(RunEndedEvent evt)
+        {
+            if (evt.Result.IsWin)
+            {
+                Celebrate(_player.position).Forget();
+            }
+        }
+
+        public void Dispose()
+        {
+            _disposed = true;
+            EventDispatcher.Unregister(this);
+
+            _pools.Values.Foreach(pool => pool.Dispose());
+            _pools.Clear();
+            _templates.Foreach(Object.Destroy);
+            _templates.Clear();
+
+            foreach (var system in _trail)
+            {
+                if (system)
+                {
+                    Object.Destroy(system.gameObject);
+                }
+            }
+        }
+
+        private ParticleSystem[] CreateTrail(out float[] baseRates)
+        {
+            if (!_tuning.SlideTrail)
+            {
+                baseRates = Array.Empty<float>();
+                return Array.Empty<ParticleSystem>();
+            }
+
+            var instance = Object.Instantiate(_tuning.SlideTrail, _player);
+            instance.transform.localPosition = _tuning.TrailLocalPosition;
+
+            var systems = instance.GetComponentsInChildren<ParticleSystem>();
+            baseRates = new float[systems.Length];
+
+            for (int i = 0; i < systems.Length; i++)
+            {
+                var main = systems[i].main;
+                main.simulationSpace = ParticleSystemSimulationSpace.World;
+                baseRates[i] = systems[i].emission.rateOverTimeMultiplier;
+                systems[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+
+            return systems;
+        }
+
+        private async UniTaskVoid Celebrate(Vector3 origin)
+        {
+            PlayOneShot(_tuning.ConfettiEffect, origin + Vector3.up * _tuning.ConfettiHeight).Forget();
+
+            foreach (var offset in _tuning.FireworkOffsets)
+            {
+                PlayOneShot(_tuning.FireworkEffect, origin + offset).Forget();
+                await UniTask.Delay(TimeSpan.FromSeconds(_tuning.FireworkInterval));
+
+                if (_disposed)
+                {
+                    return;
+                }
+            }
+        }
+
+        private async UniTaskVoid PlayOneShot(GameObject prefab, Vector3 position)
+        {
+            if (!prefab)
+            {
+                return;
+            }
+
+            var pool = GetPool(prefab);
+            var instance = await pool.GetAsync();
+            instance.SetPositionAndRotation(position, Quaternion.identity);
+
+            foreach (var system in instance.GetComponentsInChildren<ParticleSystem>())
+            {
+                system.Clear(true);
+                system.Play(true);
+            }
+
+            await UniTask.Delay(TimeSpan.FromSeconds(_tuning.OneShotLifetime));
+
+            if (!_disposed)
+            {
+                pool.Return(instance);
+            }
+        }
+
+        private ComponentPool<Transform> GetPool(GameObject prefab)
+        {
+            if (_pools.TryGetValue(prefab, out var pool))
+            {
+                return pool;
+            }
+
+            var template = Object.Instantiate(prefab);
+            template.name = prefab.name;
+            _templates.Add(template);
+
+            pool = new ComponentPool<Transform>();
+            pool.Init(template.transform, _tuning.InitialPoolSize);
+            _pools.Add(prefab, pool);
+            return pool;
+        }
+    }
+}

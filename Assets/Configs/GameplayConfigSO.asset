@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f554c11e634241c3b70f9f3ac994d031, type: 3}
+  m_Name: GameplayConfigSO
+  m_EditorClassIdentifier: 
+  Sled:
+    MinLaunchSpeed: 9
+    MaxLaunchSpeed: 17
+    Gravity: 9.81
+    Friction: 0.06
+    AirDrag: 0.01
+    MaxSpeed: 30
+    MaxSpeedUpgradeFactor: 0.5
+    TurnAcceleration: 200
+    TurnDamping: 4
+    MaxHeadingDegrees: 55
+    CarveDrag: 0.05
+    StallSpeed: 1.5
+    StallGraceSeconds: 1.5
+    StopDeceleration: 22
+  Controls:
+    HorizontalDragFullFraction: 0.12
+    VerticalDragFullFraction: 0.2
+    KeyboardChargeSeconds: 1.1
+    TapMaxSeconds: 0.3
+    TapMaxMovePixels: 24
+    ActionKey: 32
+  Slingshot:
+    StartZ: 5
+    MaxPullbackMeters: 2.5
+    MinimumPullToFire: 0.12
+    PostForwardOffset: 1.2
+    PouchHeight: 0.9
+  CameraRig:
+    Offset: {x: 0, y: 4.2, z: -8.5}
+    LookAhead: {x: 0, y: 0.8, z: 7}
+    FollowSmoothTime: 0.18
+    LateralFollowFactor: 0.5
+    BaseFov: 55
+    MaxFovBoost: 14
+    FovLerpSpeed: 3
+    MaxShakeOffset: 0.6
+    MaxShakeRollDegrees: 4
+    ShakeFrequency: 28
+    TraumaDecay: 1.4
+    SlowHitShake: 0.35
+    CrashShake: 1
+  Audio:
+    Launch: {fileID: 8300000, guid: 7115529d9ccfe60489c0cb7fef259d59, type: 3}
+    Pickup: {fileID: 8300000, guid: 94c1dedf4d64fa0438bfe755ee2873ed, type: 3}
+    Finish: {fileID: 8300000, guid: fe9e1beb5f6674944a04e5244f216962, type: 3}
+    SlideLoop: {fileID: 8300000, guid: 0bf8f89fd24c079489f11c5f2871b59c, type: 3}
+    Surfaces:
+    - Surface: 0
+      Clips:
+      - {fileID: 8300000, guid: b52743dec27a7481ea8a1ffc607e720c, type: 3}
+    - Surface: 1
+      Clips:
+      - {fileID: 8300000, guid: d7878aa328fc54a5e87038e8a492e3ea, type: 3}
+    - Surface: 2
+      Clips:
+      - {fileID: 8300000, guid: d190a5cda705643dbacd101f0bbcad88, type: 3}
+    - Surface: 3
+      Clips:
+      - {fileID: 8300000, guid: 1cd1ccd3167f64f1ca7e2ee4b9ed1de1, type: 3}
+      - {fileID: 8300000, guid: a9ac6bc88e35241ce9b2f01a795dd78f, type: 3}
+      - {fileID: 8300000, guid: e83ed39912f5f4400aa3e2285bb7c00e, type: 3}
+    FemaleVoices:
+    - {fileID: 8300000, guid: ea618dc430cc85c46ae2cbf10ac6acec, type: 3}
+    - {fileID: 8300000, guid: 524b1861bfe1336498cfa2ed69fc2fe3, type: 3}
+    - {fileID: 8300000, guid: 537558e9f13d8134ab22a27fcae64039, type: 3}
+    - {fileID: 8300000, guid: da4a0f93d4fea8c47a8b4d33be18862e, type: 3}
+    MaleVoices:
+    - {fileID: 8300000, guid: afc0b367c9009b649981141d2b069806, type: 3}
+    - {fileID: 8300000, guid: 1f122b60faf2bb949bb666c083c4110f, type: 3}
+    - {fileID: 8300000, guid: 50fef8d54f8032642a52fab5486ae16c, type: 3}
+    - {fileID: 8300000, guid: 3ae19ecf3ed868345bb13a8c19b7526b, type: 3}
+    SlideLoopMaxVolume: 1
+  Effects:
+    PickupEffect: {fileID: 100004, guid: 3015ed8dfa77d4550aad4a467429bd1c, type: 3}
+    SoftHitEffect: {fileID: 100006, guid: c29d53f45448c47fda8f9aee009ce673, type: 3}
+    CrashEffect: {fileID: 100010, guid: 568113660fd8645769097e369edd67f3, type: 3}
+    FireworkEffect: {fileID: 100004, guid: c3782c1d10e1046ebba05bd984cf0345, type: 3}
+    ConfettiEffect: {fileID: 100002, guid: 0e1e4e3cdb4ee2e47a820b82fad9ab40, type: 3}
+    SlideTrail: {fileID: 1545117726631970, guid: a150aa9898a0a844a902e75611689d26, type: 3}
+    SlingshotPrefab: {fileID: 152160354, guid: f755810f80714d749fe4f347ed6e9506, type: 3}
+    OneShotLifetime: 6
+    InitialPoolSize: 2
+    HitEffectHeight: 1
+    FireworkOffsets:
+    - {x: -4, y: 5, z: 6}
+    - {x: 4, y: 6, z: 10}
+    - {x: 0, y: 8, z: 14}
+    - {x: -2, y: 6, z: 18}
+    FireworkInterval: 0.3
+    ConfettiHeight: 7
+    TrailLocalPosition: {x: 0, y: 0.15, z: -0.6}
+    TrailIntensity: {x: 0.25, y: 1.6}

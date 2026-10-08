@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3177bc9396b0483f99f630d993858533, type: 3}
+  m_Name: LadybugCharacterSO
+  m_EditorClassIdentifier: 
+  Data:
+    Id: LadybugCharacterSO
+    Name: Ladybug
+    Icon: {fileID: 0}
+    SelectedClip: {fileID: 8300000, guid: 608dc58f0b5f9407cb6c0b366f7cdccb, type: 3}
+    VisualsPrefab:
+      m_AssetGUID: 7bc9faca7980844a0ad26b05ffd42f0a
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Voice: 0
+    LaunchClips:
+    - {fileID: 7400000, guid: dfc4c1b25aeb4bc498149844284f0254, type: 3}
+    - {fileID: 7400000, guid: a179405464a409c499d638f4190a3f62, type: 3}
+    - {fileID: 7400000, guid: d9ce46c055b0cfd438ad017babc4052b, type: 3}
+    - {fileID: 7400000, guid: 385f8d53d765c2b45aa2934fe48ea951, type: 3}
+    CrashClips:
+    - {fileID: 7400000, guid: 27f83e4eed2489543b578adbe2de3368, type: 3}
+    - {fileID: 7400000, guid: 36cb5e7ea8a2ea04faff0bb6c20daf07, type: 3}
+    - {fileID: 7400000, guid: 404fbc596d1e4f345a33291c5a1cad87, type: 3}
+    VictoryClips:
+    - {fileID: 7400000, guid: dcac2c263a38ac64ea9b6b40a1608380, type: 3}
+    - {fileID: 7400000, guid: 763fc4d1473423d4c9e7ee3fc86e24db, type: 3}
+    - {fileID: 7400000, guid: 1d8699572748f8c40879bec4d40d4b13, type: 3}
+    - {fileID: 7400000, guid: b8892156033118840ab06e557f510d1d, type: 3}

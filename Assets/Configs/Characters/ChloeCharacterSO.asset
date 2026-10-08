@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3177bc9396b0483f99f630d993858533, type: 3}
+  m_Name: ChloeCharacterSO
+  m_EditorClassIdentifier: 
+  Data:
+    Id: ChloeCharacterSO
+    Name: Chloe
+    Icon: {fileID: 0}
+    SelectedClip: {fileID: 8300000, guid: 551dfabca243c4826b4e789927865b6c, type: 3}
+    VisualsPrefab:
+      m_AssetGUID: 1944aaa2bfee24c4d8f48e8a41773446
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Voice: 0
+    LaunchClips:
+    - {fileID: 7400000, guid: 79c642f96b3f4d64cb81425c5db89c80, type: 3}
+    - {fileID: 7400000, guid: 0059437775fb1cc47b8d9c239aaa39fc, type: 3}
+    - {fileID: 7400000, guid: a9c168e1615436c4992ca81b36ca8cd9, type: 3}
+    - {fileID: 7400000, guid: f32134b9cce6a354895f88cf5f107cbc, type: 3}
+    CrashClips:
+    - {fileID: 7400000, guid: 91c0054c38f997d419d989c97b51177a, type: 3}
+    VictoryClips:
+    - {fileID: 7400000, guid: 5cad55bf8a023f246a0f734f77223eb8, type: 3}

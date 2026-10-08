@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3177bc9396b0483f99f630d993858533, type: 3}
+  m_Name: AlixCharacterSO
+  m_EditorClassIdentifier: 
+  Data:
+    Id: AlixCharacterSO
+    Name: Alix
+    Icon: {fileID: 0}
+    SelectedClip: {fileID: 8300000, guid: 0e0655fe16a6f47bbaf5b809efe260f5, type: 3}
+    VisualsPrefab:
+      m_AssetGUID: 0d12db7fd58ed45bcbfee6b8046e1d4d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Voice: 0
+    LaunchClips:
+    - {fileID: 7400000, guid: 26768b58911c7714aaab464c108cc71b, type: 3}
+    - {fileID: 7400000, guid: efa894e9e572e8f4b88fe9b42801341f, type: 3}
+    - {fileID: 7400000, guid: 4fcc0c5756ca7aa44bc1dddc10b6bda1, type: 3}
+    CrashClips:
+    - {fileID: 7400000, guid: 24be0c786afaaa149957c4b7a6812dd1, type: 3}
+    VictoryClips:
+    - {fileID: 7400000, guid: 7dc94b3be0e8cc945a569b084424d1ae, type: 3}

@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 7cafb31fea5bb4b3b9416b1e8e53f434
+  m_SerializeEntries:
+  - m_GUID: 0d12db7fd58ed45bcbfee6b8046e1d4d
+    m_Address: Prefabs/Characters/Char_Alix
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17963773a1860489387a195ef16274f7
+    m_Address: Prefabs/PlayerView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1944aaa2bfee24c4d8f48e8a41773446
+    m_Address: Prefabs/Characters/Char_Chloe
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19e6e9f8c8ab94f7bb90bdde7c28a2a9
+    m_Address: Prefabs/Characters/Char_Marinette
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 374fc08e9232042899774477fc6bd0b2
+    m_Address: Prefabs/GameplayView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4953350266a3e403daeed2c20962a639
+    m_Address: Prefabs/Characters/Char_Viperion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 593a99522ad1f4695bb25041b0755c32
+    m_Address: Prefabs/Characters/Char_CosmoBug
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ad726b7a53c24ed393389cb63d90f7a
+    m_Address: Prefabs/GameplayUIView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a2b2b51728ab4649b7a355c23e23a17
+    m_Address: Prefabs/Characters/Char_QueenBee
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bc9faca7980844a0ad26b05ffd42f0a
+    m_Address: Prefabs/Characters/Char_Ladybug
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85641e6c36e364841a16899d2989b40e
+    m_Address: Prefabs/Characters/Char_Kagami
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a1be9ecc727d428499ca8aa1a346057
+    m_Address: Prefabs/MainMenuView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d9f3941ea80744627874f1fe8edcdd2b
+    m_Address: Prefabs/PopupBackground
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3f9e284091d54c2bb51375e9c43ed28
+    m_Address: Prefabs/Characters/Char_Alya
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 287e98f73220f42d38a05fd7d20e0fe4, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a04fc11972ff64719b8449ee1a89d006, type: 2}
+    - {fileID: 11400000, guid: a3a842e22929b4adc91d98bdcdfa9891, type: 2}

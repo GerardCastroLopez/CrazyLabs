@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3177bc9396b0483f99f630d993858533, type: 3}
+  m_Name: KagamiCharacterSO
+  m_EditorClassIdentifier: 
+  Data:
+    Id: KagamiCharacterSO
+    Name: Kagami
+    Icon: {fileID: 0}
+    SelectedClip: {fileID: 8300000, guid: 22fb276cd27794df2b5d8bdc2da949e2, type: 3}
+    VisualsPrefab:
+      m_AssetGUID: 85641e6c36e364841a16899d2989b40e
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Voice: 0
+    LaunchClips:
+    - {fileID: 1827226128182048838, guid: f871ed4089d4ab84dbb41c618fc589de, type: 3}
+    - {fileID: 1827226128182048838, guid: 7ce4145af4d8b9e49b30777695d8a99c, type: 3}
+    - {fileID: 1827226128182048838, guid: 24e158ff5d7fc7a4fbf29083e1a7bf0a, type: 3}
+    - {fileID: 1827226128182048838, guid: b7677ec2a9db0284caaf9bf8cd74bb9d, type: 3}
+    - {fileID: 1827226128182048838, guid: a499a95e1a9043449a2ea7e04174202c, type: 3}
+    CrashClips:
+    - {fileID: 1827226128182048838, guid: 569f51e79ba8ec34c85aaffc7a07dc06, type: 3}
+    VictoryClips:
+    - {fileID: 1827226128182048838, guid: 1a6d82292566fad4989418344b8da8a1, type: 3}

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3177bc9396b0483f99f630d993858533, type: 3}
+  m_Name: MarinetteCharacterSO
+  m_EditorClassIdentifier: 
+  Data:
+    Id: MarinetteCharacterSO
+    Name: Marinette
+    Icon: {fileID: 0}
+    SelectedClip: {fileID: 8300000, guid: d277ead69f9f74c73ad84a21a8a2875b, type: 3}
+    VisualsPrefab:
+      m_AssetGUID: 19e6e9f8c8ab94f7bb90bdde7c28a2a9
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Voice: 0
+    LaunchClips:
+    - {fileID: 7400000, guid: 056c47842d8202a45a3d800f5a422d14, type: 3}
+    - {fileID: 7400000, guid: 00efd284d46f10b4aaaf2687effc96c8, type: 3}
+    - {fileID: 7400000, guid: 77a8acb28addef844be39b893ece28d8, type: 3}
+    CrashClips:
+    - {fileID: 7400000, guid: a5edb4fcfcee19047a3d3f2b887fc360, type: 3}
+    - {fileID: 7400000, guid: 60ddf6f9d1c0918429c039a2ccf009de, type: 3}
+    VictoryClips:
+    - {fileID: 7400000, guid: a4b4a18f888b04e4da57d5aadec1af76, type: 3}
