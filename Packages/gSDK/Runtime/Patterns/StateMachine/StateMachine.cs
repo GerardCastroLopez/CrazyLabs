@@ -53,13 +53,23 @@ namespace gSDK.Patterns.StateMachine
             }
             return false;
         }
-		
-        public async UniTask ChangeState<T>(Action<T> setup = null) where T : IState
+
+        public void ChangeState<T>(Action<T> setup = null) where T : IState
         {
-            await ChangeState(typeof(T), setup);
+            AsyncChangeState(setup).Forget();
         }
-        
-        public async UniTask ChangeState<T>(Type newStateType, Action<T> setup = null) where T : IState
+
+        public async UniTask AsyncChangeState<T>(Action<T> setup = null) where T : IState
+        {
+            await AsyncChangeState(typeof(T), setup);
+        }
+
+        public void ChangeState<T>(Type newStateType, Action<T> setup = null) where T : IState
+        {
+            AsyncChangeState(newStateType, setup).Forget();
+        }
+
+        public async UniTask AsyncChangeState<T>(Type newStateType, Action<T> setup = null) where T : IState
         {   
             if (!TryGetState(newStateType, out T newState))
             {
@@ -93,7 +103,7 @@ namespace gSDK.Patterns.StateMachine
         {
             if (_prevStates.Count > 0)
             {
-                await ChangeState<IState>(_prevStates.Peek());
+                await AsyncChangeState<IState>(_prevStates.Peek());
             }
         }
 

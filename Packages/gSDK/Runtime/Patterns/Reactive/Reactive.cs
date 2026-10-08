@@ -6,10 +6,11 @@ namespace gSDK
 {
     /// <summary>
     /// In order to serialise a Reactive value, either to display in the inspector or to store it in a json, you'll need to create a class extending Reactive with your type.
+    /// See ReactiveTypes.cs.
     /// </summary>
     public class Reactive<T>
     {
-        private List<Action<T>> _listeners = new List<Action<T>>();
+        private List<Action<T>> _listeners = new();
 
         [SerializeField] protected T _value;
         public T Value

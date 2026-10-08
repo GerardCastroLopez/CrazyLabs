@@ -8,5 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SledRun.unity
     guid: 62bbee96b28ea4cfdb742e991a179835
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 7bba37388c0004959b95527ec86af364, type: 2}
   m_UseUCBPForAssetBundles: 0

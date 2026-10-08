@@ -55,6 +55,11 @@ namespace gSDK.UI
         {
             _loading?.Toggle(show, animate, callback);
         }
+        
+        public UniTask AsyncToggleLoading(bool show, bool animate)
+        {
+            return _loading?.AsyncToggle(show, animate) ?? UniTask.CompletedTask;
+        }
 
         public async UniTask<GameObject> Show(object viewRef, int layerIndex, [CanBeNull] Type singleInstanceType)
         {
