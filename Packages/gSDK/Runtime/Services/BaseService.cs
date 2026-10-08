@@ -26,12 +26,13 @@ namespace gSDK.Services
 
         ~BaseService()
         {
-            Dispose();
+            EventDispatcher.Unregister(this);
         }
 
         public void Dispose()
         {
             EventDispatcher.Unregister(this);
+            OnDispose();
         }
 
         public void OnReady(Action callback)
@@ -44,6 +45,10 @@ namespace gSDK.Services
             {
                 _onReady.Add(callback);
             }
+        }
+
+        protected virtual void OnDispose()
+        {
         }
 
         protected virtual void OnServicesRegistered()

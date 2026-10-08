@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.AddressableAssets;
 using gSDK.Services;
 using JetBrains.Annotations;
 using Object = UnityEngine.Object;
@@ -67,13 +66,17 @@ namespace gSDK.UI
             
             if (singleInstanceType != null && _loadedSingleInstances.TryGetValue(singleInstanceType, out var instance))
             {
-                instance.transform.SetParent(layerTr, false);
-                instance.transform.SetAsLastSibling();
-                return instance;
+                if (instance)
+                {
+                    instance.transform.SetParent(layerTr, false);
+                    instance.transform.SetAsLastSibling();
+                    return instance;
+                }
+
+                _loadedSingleInstances.Remove(singleInstanceType);
             }
             
-            var prefab = await Addressables.LoadAssetAsync<GameObject>(viewRef).Task;
-            instance = Object.Instantiate(prefab, layerTr);
+            instance = await AddressableInstance.Instantiate(viewRef, layerTr);
             
             if (singleInstanceType != null)
             {
@@ -81,6 +84,20 @@ namespace gSDK.UI
             }
             
             return instance;
+        }
+
+        public void ReleaseSingleInstances()
+        {
+            foreach (var instance in _loadedSingleInstances.Values)
+            {
+                AddressableInstance.ReleaseOrDestroy(instance);
+            }
+            _loadedSingleInstances.Clear();
+        }
+
+        protected override void OnDispose()
+        {
+            ReleaseSingleInstances();
         }
 
         public void SetLayer(RectTransform rect, int layerIndex)

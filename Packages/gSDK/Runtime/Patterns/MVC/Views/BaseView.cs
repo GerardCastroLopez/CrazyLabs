@@ -50,7 +50,7 @@ namespace gSDK.MVC
 
         protected internal virtual void Destroy()
         {
-            Destroy(gameObject);
+            AddressableInstance.ReleaseOrDestroy(gameObject);
         }
     }
 

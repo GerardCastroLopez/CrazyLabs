@@ -2,24 +2,28 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace gSDK.Patterns.Pooling
 {
     public class AddressablePool<T> : BasePool<T> where T : Component
     {
+        private AsyncOperationHandle<GameObject> _prefabHandle;
         private UniTask<GameObject> _prefab;
         private Transform _poolParentTr;
 
 
         public AddressablePool(string poolId, AssetReference viewRef, int maxInstances, bool canGrow = true)
         {
-            _prefab = Addressables.LoadAssetAsync<GameObject>(viewRef).Task.AsUniTask();
+            _prefabHandle = Addressables.LoadAssetAsync<GameObject>(viewRef);
+            _prefab = _prefabHandle.Task.AsUniTask();
             CommonInit(poolId, maxInstances, canGrow);
         }
 
         public AddressablePool(string viewId, int maxInstances, bool canGrow = true)
         {
-            _prefab = Addressables.LoadAssetAsync<GameObject>(viewId).Task.AsUniTask();
+            _prefabHandle = Addressables.LoadAssetAsync<GameObject>(viewId);
+            _prefab = _prefabHandle.Task.AsUniTask();
             CommonInit(viewId, maxInstances, canGrow);
         }
 
@@ -62,6 +66,11 @@ namespace gSDK.Patterns.Pooling
             {
                 Object.Destroy(_poolParentTr.gameObject);
                 _poolParentTr = null;
+            }
+
+            if(_prefabHandle.IsValid())
+            {
+                Addressables.Release(_prefabHandle);
             }
         }
     }
