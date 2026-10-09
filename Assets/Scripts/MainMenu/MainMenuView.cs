@@ -6,7 +6,6 @@ using DG.Tweening;
 using gSDK.MVC;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CrazyLabs.MainMenu
 {
@@ -14,7 +13,6 @@ namespace CrazyLabs.MainMenu
     {
         [SerializeField] private CanvasGroup _canvasGrp;
         [SerializeField] private TweenValues _showTween, _hideTween;
-        [SerializeField] private Image _characterImg;
         [SerializeField] private TMP_Text _characterNameTxt, _levelNameTxt;
         [SerializeField] private UpgradesComponent _upgrades;
         [SerializeField] private AudioSource _audioSource;
@@ -38,6 +36,8 @@ namespace CrazyLabs.MainMenu
         protected override void OnBind()
         {
             base.OnBind();
+
+            (transform as RectTransform).SetSafeArea();
             
             _controller.Character.AddListener(OnCharacterChanged, true);
             _controller.Level.AddListener(l => _levelNameTxt.text = l.DisplayName, true);
@@ -73,9 +73,8 @@ namespace CrazyLabs.MainMenu
 
         private void OnCharacterChanged(CharacterData character)
         {
-            bool hasChanged = !string.IsNullOrEmpty(_characterNameTxt.text);
+            bool hasChanged = !_characterNameTxt.text.IsNullOrEmpty();
             
-            //_characterImg.sprite = character.Icon;
             _characterNameTxt.text = character.Name;
 
             if (hasChanged)

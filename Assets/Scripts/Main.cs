@@ -13,6 +13,8 @@ namespace CrazyLabs
 {
     public class Main : MonoBehaviour
     {
+        private const int kTargetFrameRate = 60;
+
         [SerializeField] private RectTransform _uiRoot;
         [SerializeField] private LoadingView _loading;
         [SerializeField] private AssetReference _popupBackgroundRef;
@@ -21,6 +23,10 @@ namespace CrazyLabs
         
         void Awake()
         {
+            Application.targetFrameRate = kTargetFrameRate;
+            QualitySettings.vSyncCount = 0;
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
             var locator = new Locator();
 
             foreach (var config in _configs)

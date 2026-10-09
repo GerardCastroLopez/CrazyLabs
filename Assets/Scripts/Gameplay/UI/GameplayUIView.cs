@@ -43,6 +43,8 @@ namespace CrazyLabs.Gameplay.UI
         protected override void OnBind()
         {
             base.OnBind();
+
+            (transform as RectTransform).SetSafeArea();
             
             _controller.Currency.AddListener(OnCurrencyChanged, true);
             _controller.Distance.AddListener(f => _distanceTxt.text = $"{f:0} / {_controller.TrackLength:0} m", true);

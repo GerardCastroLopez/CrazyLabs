@@ -264,8 +264,11 @@ public static class UnityExtensions
 
     public static void SetSafeArea(this RectTransform tr)
     {
-        tr.offsetMin += Screen.safeArea.position;
-        tr.offsetMax += Screen.safeArea.position + Screen.safeArea.size - new Vector2(Screen.width, Screen.height);
+        var canvas = tr.GetComponentInParent<Canvas>();
+        float scale = canvas ? canvas.rootCanvas.scaleFactor : 1f;
+
+        tr.offsetMin += Screen.safeArea.position / scale;
+        tr.offsetMax += (Screen.safeArea.position + Screen.safeArea.size - new Vector2(Screen.width, Screen.height)) / scale;
     }
 
     public static T AddReusedObject<T>(this List<T> list, T defaultPrefab, Transform parent, Action<int, T> onInit)

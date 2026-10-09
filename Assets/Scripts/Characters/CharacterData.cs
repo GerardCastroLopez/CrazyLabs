@@ -14,7 +14,6 @@ namespace CrazyLabs.Characters
     public class CharacterData
     {
         public string Id, Name;
-        public Sprite Icon;
         public AudioClip SelectedClip;
         public AssetReferenceGameObject VisualsPrefab;
         public CharacterVoice Voice;

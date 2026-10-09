@@ -12,9 +12,11 @@ namespace CrazyLabs.Gameplay.UI
     {
         [SerializeField] private CanvasGroup _canvasGrp;
         [SerializeField] private TweenValues _tween;
+        [SerializeField] private float _fromScale = 0.75f;
         [SerializeField] private TMP_Text _resultTxt, _resultDetailsTxt;
         [SerializeField] private string _winTitle = "Course Complete!";
         [SerializeField] private string _loseTitle = "Run Over";
+        [SerializeField] private RectTransform _safeArea;
         [SerializeField] private UpgradesComponent _upgrades;
 
 
@@ -32,6 +34,8 @@ namespace CrazyLabs.Gameplay.UI
         {
             base.OnBind();
 
+            _safeArea.SetSafeArea();
+
             _upgrades.Init(_controller.UpgradesModule, _controller.Currency);
         }
         
@@ -42,7 +46,11 @@ namespace CrazyLabs.Gameplay.UI
             if (animate)
             {
                 _canvasGrp.alpha = 0f;
-                return _canvasGrp.DOFade(1f, _tween.Duration).SetId(this).SetEase(_tween.Ease).AsyncWaitForCompletion().AsUniTask();
+                //_safeArea.localScale = Vector3.one * _fromScale;
+                return DOTween.Sequence()
+                    .Append(_safeArea.DOScale(_fromScale, _tween.Duration).From())
+                    .Join(_canvasGrp.DOFade(1f, _tween.Duration))
+                    .SetId(this).SetEase(_tween.Ease).AsyncWaitForCompletion().AsUniTask();
             }
 
             _canvasGrp.alpha = 1f;

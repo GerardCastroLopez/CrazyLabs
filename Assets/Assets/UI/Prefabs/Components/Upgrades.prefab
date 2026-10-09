@@ -108,7 +108,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669631346519603077}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -118,10 +118,10 @@ RectTransform:
   - {fileID: 5819421329686804978}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -640}
-  m_SizeDelta: {x: 940, y: 700}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 320}
+  m_SizeDelta: {x: -100, y: 700}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &7246070870725922309
 MonoBehaviour:
@@ -139,6 +139,9 @@ MonoBehaviour:
   _upgradePrefab: {fileID: 154664502320503784}
   _scrollRect: {fileID: 4941883404175432085}
   _upgradeClip: {fileID: 8300000, guid: f7b1570aac321584592ce20ef9a367f8, type: 3}
+  _currencyCountDelay: 0.4
+  _currencyCountDuration: 0.8
+  _currencyCountEase: 9
 --- !u!222 &2003190706473271923
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -482,7 +485,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -12, y: 0}
-  m_SizeDelta: {x: 230, y: 96}
+  m_SizeDelta: {x: 200, y: 96}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &5469951288194482138
 CanvasRenderer:
@@ -881,7 +884,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 24, y: 0}
-  m_SizeDelta: {x: 380, y: 100}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3378773288649866683
 CanvasRenderer:
@@ -1076,6 +1079,12 @@ MonoBehaviour:
   _costTxt: {fileID: 4321266587680305468}
   _upgradeBtn: {fileID: 5678605032167052802}
   _flashGraphic: {fileID: 8227138205217535688}
+  _flashColor: {r: 1, g: 0.85, b: 0.3, a: 0.6}
+  _flashDuration: 0.4
+  _punchScale: 0.12
+  _punchDuration: 0.35
+  _maxColor: {r: 1, g: 0.85, b: 0.3, a: 1}
+  _unaffordableColor: {r: 1, g: 0.45, b: 0.4, a: 1}
 --- !u!1 &8053291759809532653
 GameObject:
   m_ObjectHideFlags: 0
