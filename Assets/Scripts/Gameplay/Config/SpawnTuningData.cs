@@ -19,7 +19,7 @@ namespace CrazyLabs.Gameplay.Config
         [Tooltip("Min and max sideways gap between two obstacles in the same row, so there is always a way through.")]
         public Vector2 PairGap = new(5f, 8f);
 
-        [Tooltip("Chance that a croissant row wiggles instead of running straight.")]
+        [Tooltip("Chance that a collectible row wiggles instead of running straight.")]
         [Range(0f, 1f)] public float SwayChance = 0.5f;
         public Vector2 SwayAmount = new(0.6f, 1.4f);
         public float SwayFrequency = 0.9f;

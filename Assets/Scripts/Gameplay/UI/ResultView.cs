@@ -67,7 +67,7 @@ namespace CrazyLabs.Gameplay.UI
             var result = _controller.Result;
 
             _resultTxt.text = result.IsWin ? _winTitle : _loseTitle;
-            _resultDetailsTxt.text = $"Distance  {result.DistanceMeters:0} m  ({result.Progress01 * 100f:0}%)\nCroissants  +{result.CoinsCollected}";
+            _resultDetailsTxt.text = $"Distance  {result.DistanceMeters:0} m  ({result.Progress01 * 100f:0}%)\nCollectibles  +{result.CoinsCollected}";
 
             return base.WillShow();
         }
