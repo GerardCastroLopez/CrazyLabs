@@ -87,7 +87,14 @@ namespace CrazyLabs.Gameplay.Player
 
         internal void PlayIdle()
         {
-            PlayAnimation(kIdle);
+            if (!_animator || !_animator.isActiveAndEnabled)
+            {
+                return;
+            }
+
+            ResetTriggers();
+            _animator.Play(kIdle, 0, 0f);
+            _animator.Update(0f);
         }
 
         internal void PlayLaunch()
@@ -159,11 +166,16 @@ namespace CrazyLabs.Gameplay.Player
                 return;
             }
 
+            ResetTriggers();
+            _animator.SetTrigger(trigger);
+        }
+
+        private void ResetTriggers()
+        {
             _animator.ResetTrigger(kIdle);
             _animator.ResetTrigger(kLaunch);
             _animator.ResetTrigger(kCrash);
             _animator.ResetTrigger(kVictory);
-            _animator.SetTrigger(trigger);
         }
     }
 }
