@@ -1075,6 +1075,7 @@ MonoBehaviour:
   _levelTxt: {fileID: 6346432776706049106}
   _costTxt: {fileID: 4321266587680305468}
   _upgradeBtn: {fileID: 5678605032167052802}
+  _flashGraphic: {fileID: 8227138205217535688}
 --- !u!1 &8053291759809532653
 GameObject:
   m_ObjectHideFlags: 0
