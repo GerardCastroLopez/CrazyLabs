@@ -48,16 +48,46 @@ MonoBehaviour:
     SlowChance: 0.25
     PairChance: 0.35
     CrashObstacles:
-    - {m_AssetGUID: 351f3fde2d934178a019908f707e70b6, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
-    - {m_AssetGUID: 69f1e87087ea4fd0a17c6c854250efb8, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
-    - {m_AssetGUID: 3dab2ae21c854f2f8be0d00b04c8474d, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
-    - {m_AssetGUID: 01ce74821b7c41638dcff9fbcc3ccf58, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
-    - {m_AssetGUID: 0c435ef90833408fac6c4365a9f48c52, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
-    - {m_AssetGUID: cf30064fb381431fbcacfbc8352c455a, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    - m_AssetGUID: 351f3fde2d934178a019908f707e70b6
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    - m_AssetGUID: 69f1e87087ea4fd0a17c6c854250efb8
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    - m_AssetGUID: 3dab2ae21c854f2f8be0d00b04c8474d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    - m_AssetGUID: 01ce74821b7c41638dcff9fbcc3ccf58
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    - m_AssetGUID: 0c435ef90833408fac6c4365a9f48c52
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    - m_AssetGUID: cf30064fb381431fbcacfbc8352c455a
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
     SlowObstacles:
-    - {m_AssetGUID: a4c79203adb14dceb7eee75a9adc7f4b, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
-    - {m_AssetGUID: e5a36272058d419288a94941933e5500, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    - m_AssetGUID: a4c79203adb14dceb7eee75a9adc7f4b
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
     Scenery:
-    - {m_AssetGUID: 69161cb72b193462f988c122004263c5, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
-    - {m_AssetGUID: 2a4844fe2ae894a4e8db1b1daec63d61, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
-    AmbientEffect: {m_AssetGUID: , m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    - m_AssetGUID: 69161cb72b193462f988c122004263c5
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    - m_AssetGUID: 2a4844fe2ae894a4e8db1b1daec63d61
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    AmbientEffect:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

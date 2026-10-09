@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Utils
@@ -31,6 +33,7 @@ namespace Utils
         /// <param name="scriptableObjectPath">Must start with "Assets" and finish with ".asset"</param>
         public StringOptionsAttribute(string scriptableObjectPath, bool sortAlphabetically)
         {
+#if UNITY_EDITOR
             var asset = (IScriptableObjectIds)AssetDatabase.LoadAssetAtPath(scriptableObjectPath, typeof(IScriptableObjectIds)); 
             if(asset != null)
             {
@@ -41,6 +44,10 @@ namespace Utils
             {
                 Debug.LogError($"There's no addressable scriptableObject with path {scriptableObjectPath}!");
             }
+#else
+            SortAlphabetically = sortAlphabetically;
+            StringOptions = Array.Empty<string>();
+#endif
         }
 
         public StringOptionsAttribute(bool sortAlphabetically, params Type[] staticClassTypes)

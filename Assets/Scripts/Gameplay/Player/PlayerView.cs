@@ -2,7 +2,6 @@ using CrazyLabs.Characters;
 using CrazyLabs.Gameplay.Sled;
 using Cysharp.Threading.Tasks;
 using gSDK.MVC;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -165,7 +164,7 @@ namespace CrazyLabs.Gameplay.Player
 
         private void WireAnimator()
         {
-            _animator = _visualsInstance.GetOrAddComponent<Animator>();
+            _animator = _visualsInstance.AddOrGetComponent<Animator>();
 
             if (!_animator.avatar)
             {
