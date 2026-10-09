@@ -15,8 +15,6 @@ namespace CrazyLabs.Gameplay.Config
         public Vector2 SpawnSpacing = new(11f, 19f);
         [Tooltip("Props stay this far from the track edge.")]
         public float LaneEdgeMargin = 1.5f;
-        [Tooltip("Props get a random yaw in [-range, +range] degrees.")]
-        public float PropYawRange = 25f;
         [Tooltip("Min and max sideways gap between two obstacles in the same row, so there is always a way through.")]
         public Vector2 PairGap = new(5f, 8f);
 

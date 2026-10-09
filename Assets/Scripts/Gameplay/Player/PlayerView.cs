@@ -1,4 +1,5 @@
 using CrazyLabs.Characters;
+using CrazyLabs.Gameplay.Sled;
 using Cysharp.Threading.Tasks;
 using gSDK.MVC;
 using Unity.VisualScripting;
@@ -28,6 +29,10 @@ namespace CrazyLabs.Gameplay.Player
         private AnimatorOverrideController _overrides;
         private CharacterData _loadedCharacter;
         private int _lastLaunch = -1, _lastCrash = -1, _lastVictory = -1;
+        private Quaternion _roll = Quaternion.identity;
+        private Vector3 _visualsBasePosition;
+        private bool _hasBasePosition;
+        private float _bobPhase, _bobWeight, _bumpOffset, _bumpVelocity;
 
 
         protected override UniTask InternalShow(bool animate)
@@ -80,9 +85,46 @@ namespace CrazyLabs.Gameplay.Player
 
             if (_visualsRoot)
             {
-                var target = Quaternion.Euler(0f, 0f, -sled.TurnNormalized * _maxLeanDegrees);
-                _visualsRoot.localRotation = Quaternion.Slerp(_visualsRoot.localRotation, target, deltaTime * _leanSpeed);
+                TickRide(sled, deltaTime);
             }
+        }
+
+        internal void Bump(float kick)
+        {
+            _bumpVelocity += kick * Mathf.Sqrt(_controller.Config.RideFeel.SpringStiffness);
+        }
+
+        private void TickRide(SledModule sled, float deltaTime)
+        {
+            var tuning = _controller.Config.RideFeel;
+
+            if (!_hasBasePosition)
+            {
+                _visualsBasePosition = _visualsRoot.localPosition;
+                _hasBasePosition = true;
+            }
+
+            var leanTarget = Quaternion.Euler(0f, 0f, -sled.TurnNormalized * _maxLeanDegrees);
+            _roll = Quaternion.Slerp(_roll, leanTarget, deltaTime * _leanSpeed);
+
+            float speed = sled.SpeedNormalized;
+            _bobWeight = Mathf.MoveTowards(_bobWeight, sled.IsSliding ? speed : 0f, tuning.BobFadeSpeed * deltaTime);
+            _bobPhase += Mathf.Lerp(tuning.BobFrequency.x, tuning.BobFrequency.y, speed) * deltaTime;
+
+            float bob = Noise(_bobPhase, 0f) * tuning.BobAmplitude * _bobWeight;
+            float wobble = Noise(_bobPhase * 0.8f, 1f) * tuning.PitchWobbleDegrees * _bobWeight;
+
+            float acceleration = -tuning.SpringStiffness * _bumpOffset - tuning.SpringDamping * _bumpVelocity;
+            _bumpVelocity += acceleration * deltaTime;
+            _bumpOffset += _bumpVelocity * deltaTime;
+
+            _visualsRoot.localPosition = _visualsBasePosition + Vector3.up * (bob + _bumpOffset);
+            _visualsRoot.localRotation = _roll * Quaternion.Euler(wobble - _bumpOffset * tuning.BumpPitchPerMeter, 0f, 0f);
+        }
+
+        private static float Noise(float time, float channel)
+        {
+            return Mathf.PerlinNoise(time, channel * 7.3f) * 2f - 1f;
         }
 
         internal void PlayIdle()
@@ -92,6 +134,7 @@ namespace CrazyLabs.Gameplay.Player
                 return;
             }
 
+            _bumpOffset = _bumpVelocity = 0f;
             ResetTriggers();
             _animator.Play(kIdle, 0, 0f);
             _animator.Update(0f);

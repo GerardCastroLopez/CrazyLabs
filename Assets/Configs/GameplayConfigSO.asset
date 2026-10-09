@@ -152,6 +152,17 @@ MonoBehaviour:
     SurroundHalfWidth: 90
     SurroundYOffset: -0.06
     UvTileSize: 6
+  RideFeel:
+    BobAmplitude: 0.05
+    BobFrequency: {x: 3, y: 9}
+    PitchWobbleDegrees: 1.5
+    BobFadeSpeed: 6
+    SlowBumpKick: 0.18
+    CrashBumpKick: 0.4
+    LaunchKick: 0.22
+    BumpPitchPerMeter: 25
+    SpringStiffness: 120
+    SpringDamping: 12
   PickupFeedback:
     HudPunchScale: 0.3
     HudPunchDuration: 0.25
@@ -169,7 +180,6 @@ MonoBehaviour:
     PropsStopBeforeFinish: 30
     SpawnSpacing: {x: 11, y: 19}
     LaneEdgeMargin: 1.5
-    PropYawRange: 25
     PairGap: {x: 5, y: 8}
     SwayChance: 0.5
     SwayAmount: {x: 0.6, y: 1.4}

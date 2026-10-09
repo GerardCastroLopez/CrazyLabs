@@ -20,6 +20,7 @@ namespace CrazyLabs.Gameplay.Modules
         private const int kVerticesPerRow = 2;
         private const int kIndicesPerQuad = 6;
         private const float kCoinFlip = 0.5f;
+        private const float kFullTurnDegrees = 360f;
         private static readonly int[] kQuadTriangles = { 0, 2, 1, 1, 2, 3 };
 
         private readonly List<Collectible> _collectibles = new();
@@ -407,7 +408,7 @@ namespace CrazyLabs.Gameplay.Modules
         private void Place(Transform instance, float x, float z, System.Random rng)
         {
             float slopeDegrees = Profile.PitchAt(z) * Mathf.Rad2Deg;
-            var rotation = Quaternion.Euler(slopeDegrees, 0f, 0f) * Quaternion.Euler(0f, Between(rng, -_spawn.PropYawRange, _spawn.PropYawRange), 0f);
+            var rotation = Quaternion.Euler(slopeDegrees, 0f, 0f) * Quaternion.Euler(0f, Between(rng, 0f, kFullTurnDegrees), 0f);
             instance.SetParent(_propsRoot, false);
             instance.SetPositionAndRotation(GroundPoint(x, z, 0f), rotation);
         }

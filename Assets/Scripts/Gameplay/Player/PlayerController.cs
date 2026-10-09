@@ -95,6 +95,7 @@ namespace CrazyLabs.Gameplay.Player
             _runActive = true;
             Sled.Launch(_stats.LaunchSpeedForPull(pullStrength));
             View.PlayLaunch();
+            View.Bump(Config.RideFeel.LaunchKick);
             EventDispatcher.Raise(new RunLaunchedEvent());
             _stateMachine.ChangeState<RunningState>();
         }
@@ -142,6 +143,7 @@ namespace CrazyLabs.Gameplay.Player
             {
                 obstacle.Consume();
                 EventDispatcher.Raise(new ObstacleHitEvent(obstacle));
+                View.Bump(obstacle.Kind == ObstacleKind.Crash ? Config.RideFeel.CrashBumpKick : Config.RideFeel.SlowBumpKick);
 
                 if (obstacle.Kind == ObstacleKind.Crash)
                 {

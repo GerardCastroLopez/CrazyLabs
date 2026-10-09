@@ -15,5 +15,6 @@ namespace CrazyLabs.Gameplay.Config
         public GroundTuningData Ground;
         public SpawnTuningData Spawn;
         public PickupFeedbackTuningData PickupFeedback;
+        public RideFeelTuningData RideFeel;
     }
 }
