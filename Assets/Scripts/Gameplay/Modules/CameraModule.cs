@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CrazyLabs.Gameplay.Modules
 {
-    public class CameraModule : IEventHandler<ObstacleHitEvent>
+    public class CameraModule : IEventHandler<ObstacleHitEvent>, IEventHandler<RunLaunchedEvent>
     {
         private const float kShakeSeedRange = 100f;
         private const float kNoiseChannelSpacing = 17.3f;
@@ -22,6 +22,7 @@ namespace CrazyLabs.Gameplay.Modules
         private Vector3 _smoothedPosition;
         private Vector3 _velocity;
         private float _trauma;
+        private float _smoothedFov, _fovKick;
         private float _pitch, _pitchVelocity;
 
 
@@ -32,12 +33,20 @@ namespace CrazyLabs.Gameplay.Modules
             _tuning = tuning;
             _shakeSeed = Random.value * kShakeSeedRange;
 
+            _smoothedFov = cam.fieldOfView;
+
             EventDispatcher.Register(this);
         }
 
         public void Handle(ObstacleHitEvent evt)
         {
             Shake(evt.Obstacle.Kind == ObstacleKind.Crash ? _tuning.CrashShake : _tuning.SlowHitShake);
+        }
+
+        public void Handle(RunLaunchedEvent evt)
+        {
+            _fovKick = _tuning.LaunchFovKick;
+            Shake(_tuning.LaunchShake);
         }
 
         public void Dispose()
@@ -68,7 +77,9 @@ namespace CrazyLabs.Gameplay.Modules
             ApplyShake(deltaTime, time);
 
             float fov = _tuning.BaseFov + _tuning.MaxFovBoost * speedNormalized;
-            _cam.fieldOfView = Mathf.Lerp(_cam.fieldOfView, fov, deltaTime * _tuning.FovLerpSpeed);
+            _smoothedFov = Mathf.Lerp(_smoothedFov, fov, deltaTime * _tuning.FovLerpSpeed);
+            _fovKick = Mathf.MoveTowards(_fovKick, 0f, _tuning.LaunchKickDecay * deltaTime);
+            _cam.fieldOfView = _smoothedFov + _fovKick;
         }
 
         private void ApplyFollow()

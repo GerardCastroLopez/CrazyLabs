@@ -7,7 +7,7 @@ namespace CrazyLabs.Gameplay.Config
     [Serializable]
     public class EffectsTuningData
     {
-        public AssetReferenceGameObject PickupEffect, SoftHitEffect, CrashEffect, FireworkEffect, ConfettiEffect, SlideTrail;
+        public AssetReferenceGameObject PickupEffect, SoftHitEffect, CrashEffect, FireworkEffect, ConfettiEffect, SlideTrail, LaunchEffect;
         public float OneShotLifetime = 6f;
         public int InitialPoolSize = 2;
         public float HitEffectHeight = 1f;

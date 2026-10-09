@@ -13,7 +13,7 @@ using Object = UnityEngine.Object;
 
 namespace CrazyLabs.Gameplay.Feedback
 {
-    public class ParticleModule : IEventHandler<CollectibleCollectedEvent>, IEventHandler<ObstacleHitEvent>, IEventHandler<RunEndedEvent>
+    public class ParticleModule : IEventHandler<CollectibleCollectedEvent>, IEventHandler<ObstacleHitEvent>, IEventHandler<RunEndedEvent>, IEventHandler<RunLaunchedEvent>
     {
         private readonly Transform _player;
         private readonly EffectsTuningData _tuning;
@@ -74,6 +74,11 @@ namespace CrazyLabs.Gameplay.Feedback
         {
             var effect = evt.Obstacle.Kind == ObstacleKind.Crash ? _tuning.CrashEffect : _tuning.SoftHitEffect;
             PlayOneShot(effect, evt.Obstacle.transform.position + Vector3.up * _tuning.HitEffectHeight).Forget();
+        }
+
+        public void Handle(RunLaunchedEvent evt)
+        {
+            PlayOneShot(_tuning.LaunchEffect, _player.position).Forget();
         }
 
         public void Handle(RunEndedEvent evt)
