@@ -48,11 +48,11 @@ MonoBehaviour:
     SlowChance: 0.25
     PairChance: 0.35
     CrashObstacles:
-    - {fileID: 1618891617458459765, guid: f0aeb18e152042a3ad0d3022bbc621e3, type: 3}
-    - {fileID: 5198263597406757380, guid: 49869179bc994e70910820a8437cfc7e, type: 3}
-    - {fileID: 5198263597406757380, guid: 49869179bc994e70910820a8437cfc7e, type: 3}
+    - {m_AssetGUID: f0aeb18e152042a3ad0d3022bbc621e3, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    - {m_AssetGUID: 49869179bc994e70910820a8437cfc7e, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    - {m_AssetGUID: 49869179bc994e70910820a8437cfc7e, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
     SlowObstacles: []
     Scenery:
-    - {fileID: 3720778150630461709, guid: 19d4969e4295c43b5917ada9a826faf1, type: 3}
-    - {fileID: 6471907253182840009, guid: a8f1fc1bfc240434797852a558dfbf5b, type: 3}
-    AmbientEffect: {fileID: 100000, guid: e1e3d990e821947e8b332a2033f25702, type: 3}
+    - {m_AssetGUID: 19d4969e4295c43b5917ada9a826faf1, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    - {m_AssetGUID: a8f1fc1bfc240434797852a558dfbf5b, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    AmbientEffect: {m_AssetGUID: e1e3d990e821947e8b332a2033f25702, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}

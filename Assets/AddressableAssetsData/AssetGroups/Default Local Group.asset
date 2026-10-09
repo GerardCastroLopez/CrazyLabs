@@ -162,6 +162,76 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e1e4e3cdb4ee2e47a820b82fad9ab40
+    m_Address: Assets/Assets/Particles/Prefabs/FallingConfeties.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19d4969e4295c43b5917ada9a826faf1
+    m_Address: Assets/Assets/Levels/SnowyPark/Scenery_Crystal.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a4844fe2ae894a4e8db1b1daec63d61
+    m_Address: Assets/Assets/Levels/Louvre/Scenery_Tomb.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3015ed8dfa77d4550aad4a467429bd1c
+    m_Address: Assets/Assets/Particles/Prefabs/3D_PickItem_03.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4eb6549e0eb440c297450571544f0ce0
+    m_Address: Assets/Assets/Levels/Collectables/Croissant.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 568113660fd8645769097e369edd67f3
+    m_Address: Assets/Assets/Particles/Prefabs/3D_GroundExplode_01.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5da80b9ec89f42febca4f3a2c08f11c0
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_BalloonCart.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69161cb72b193462f988c122004263c5
+    m_Address: Assets/Assets/Levels/Louvre/Scenery_Sphinx.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a150aa9898a0a844a902e75611689d26
+    m_Address: Assets/Assets/Particles/Prefabs/Slide Dust.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8f1fc1bfc240434797852a558dfbf5b
+    m_Address: Assets/Assets/Levels/SnowyPark/Scenery_Obelisk.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf196eaec6b424f8c91ed23c71d4396e
+    m_Address: Assets/Assets/Levels/SunnyPark/Scenery_Bush.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c29d53f45448c47fda8f9aee009ce673
+    m_Address: Assets/Assets/Particles/Prefabs/3D_Hit_03.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3782c1d10e1046ebba05bd984cf0345
+    m_Address: Assets/Assets/Particles/Prefabs/3D_Firework_01.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1e3d990e821947e8b332a2033f25702
+    m_Address: Assets/Assets/Levels/SnowyPark/3D_Snow_01_Loop.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 287e98f73220f42d38a05fd7d20e0fe4, type: 2}
   m_SchemaSet:

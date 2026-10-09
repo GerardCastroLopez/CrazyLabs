@@ -4,9 +4,11 @@ using CrazyLabs.Gameplay.Config;
 using CrazyLabs.Gameplay.Events;
 using CrazyLabs.Gameplay.Track;
 using Cysharp.Threading.Tasks;
+using gSDK;
 using gSDK.EventSystem;
 using gSDK.Patterns.Pooling;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
 
 namespace CrazyLabs.Gameplay.Feedback
@@ -15,12 +17,13 @@ namespace CrazyLabs.Gameplay.Feedback
     {
         private readonly Transform _player;
         private readonly EffectsTuningData _tuning;
-        private readonly Dictionary<GameObject, ComponentPool<Transform>> _pools = new();
-        private readonly List<GameObject> _templates = new();
-        private readonly ParticleSystem[] _trail;
-        private readonly float[] _trailBaseRates;
+        private readonly Dictionary<string, AddressablePool<Transform>> _pools = new();
+        private readonly HashSet<string> _failedPools = new();
         private readonly ParticleSystem _speedLines;
 
+        private ParticleSystem[] _trail = Array.Empty<ParticleSystem>();
+        private float[] _trailBaseRates = Array.Empty<float>();
+        private GameObject _trailInstance;
         private bool _disposed;
 
 
@@ -29,7 +32,7 @@ namespace CrazyLabs.Gameplay.Feedback
             _player = player;
             _tuning = tuning;
 
-            _trail = CreateTrail(out _trailBaseRates);
+            CreateTrail().Forget();
             _speedLines = speedLines;
 
             EventDispatcher.Register(this);
@@ -88,16 +91,8 @@ namespace CrazyLabs.Gameplay.Feedback
 
             _pools.Values.Foreach(pool => pool.Dispose());
             _pools.Clear();
-            _templates.Foreach(Object.Destroy);
-            _templates.Clear();
 
-            foreach (var system in _trail)
-            {
-                if (system)
-                {
-                    Object.Destroy(system.gameObject);
-                }
-            }
+            AddressableInstance.ReleaseOrDestroy(_trailInstance);
 
             if (_speedLines)
             {
@@ -105,29 +100,44 @@ namespace CrazyLabs.Gameplay.Feedback
             }
         }
 
-        private ParticleSystem[] CreateTrail(out float[] baseRates)
+        private async UniTaskVoid CreateTrail()
         {
-            if (!_tuning.SlideTrail)
+            if (!IsValid(_tuning.SlideTrail))
             {
-                baseRates = Array.Empty<float>();
-                return Array.Empty<ParticleSystem>();
+                return;
             }
 
-            var instance = Object.Instantiate(_tuning.SlideTrail, _player);
-            instance.transform.localPosition = _tuning.TrailLocalPosition;
-
-            var systems = instance.GetComponentsInChildren<ParticleSystem>();
-            baseRates = new float[systems.Length];
-
-            for (int i = 0; i < systems.Length; i++)
+            try
             {
-                var main = systems[i].main;
-                main.simulationSpace = ParticleSystemSimulationSpace.World;
-                baseRates[i] = systems[i].emission.rateOverTimeMultiplier;
-                systems[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            }
+                var instance = await AddressableInstance.Instantiate(_tuning.SlideTrail.RuntimeKey, _player);
 
-            return systems;
+                if (_disposed)
+                {
+                    AddressableInstance.ReleaseOrDestroy(instance);
+                    return;
+                }
+
+                _trailInstance = instance;
+                instance.transform.localPosition = _tuning.TrailLocalPosition;
+
+                var systems = instance.GetComponentsInChildren<ParticleSystem>();
+                var baseRates = new float[systems.Length];
+
+                for (int i = 0; i < systems.Length; i++)
+                {
+                    var main = systems[i].main;
+                    main.simulationSpace = ParticleSystemSimulationSpace.World;
+                    baseRates[i] = systems[i].emission.rateOverTimeMultiplier;
+                    systems[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                }
+
+                _trailBaseRates = baseRates;
+                _trail = systems;
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError($"ParticleModule: couldn't load the slide trail. {exception.Message}");
+            }
         }
 
         private void TickSpeedLines(bool sliding, float speedNormalized)
@@ -165,15 +175,39 @@ namespace CrazyLabs.Gameplay.Feedback
             }
         }
 
-        private async UniTaskVoid PlayOneShot(GameObject prefab, Vector3 position)
+        private async UniTaskVoid PlayOneShot(AssetReferenceGameObject reference, Vector3 position)
         {
-            if (!prefab)
+            if (!IsValid(reference))
             {
                 return;
             }
 
-            var pool = GetPool(prefab);
-            var instance = await pool.GetAsync();
+            string key = reference.RuntimeKey.ToString();
+
+            if (_failedPools.Contains(key))
+            {
+                return;
+            }
+
+            var pool = GetPool(key, reference);
+            Transform instance;
+
+            try
+            {
+                instance = await pool.GetAsync();
+            }
+            catch (Exception exception)
+            {
+                _failedPools.Add(key);
+                Debug.LogError($"ParticleModule: couldn't load '{key}', it will be skipped. {exception.Message}");
+                return;
+            }
+
+            if (_disposed)
+            {
+                return;
+            }
+
             instance.SetPositionAndRotation(position, Quaternion.identity);
 
             foreach (var system in instance.GetComponentsInChildren<ParticleSystem>())
@@ -190,21 +224,21 @@ namespace CrazyLabs.Gameplay.Feedback
             }
         }
 
-        private ComponentPool<Transform> GetPool(GameObject prefab)
+        private AddressablePool<Transform> GetPool(string key, AssetReferenceGameObject reference)
         {
-            if (_pools.TryGetValue(prefab, out var pool))
+            if (_pools.TryGetValue(key, out var pool))
             {
                 return pool;
             }
 
-            var template = Object.Instantiate(prefab);
-            template.name = prefab.name;
-            _templates.Add(template);
-
-            pool = new ComponentPool<Transform>();
-            pool.Init(template.transform, _tuning.InitialPoolSize);
-            _pools.Add(prefab, pool);
+            pool = new AddressablePool<Transform>(key, reference, _tuning.InitialPoolSize);
+            _pools.Add(key, pool);
             return pool;
+        }
+
+        private static bool IsValid(AssetReference reference)
+        {
+            return reference != null && reference.RuntimeKeyIsValid();
         }
     }
 }

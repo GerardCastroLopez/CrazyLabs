@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AllLevelsSO
   m_EditorClassIdentifier: 
   Data:
-  - {fileID: 11400000, guid: 09058269d511847c49fe98e977d524bb, type: 2}
-  - {fileID: 11400000, guid: 4d31c8e9e33a463887e60d156472dab8, type: 2}
   - {fileID: 11400000, guid: 8df7fb83c3f543c18f4390f0ba9b5fc5, type: 2}
+  - {fileID: 11400000, guid: 4d31c8e9e33a463887e60d156472dab8, type: 2}
+  - {fileID: 11400000, guid: 09058269d511847c49fe98e977d524bb, type: 2}

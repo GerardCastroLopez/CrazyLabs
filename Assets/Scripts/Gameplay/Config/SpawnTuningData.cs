@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CrazyLabs.Gameplay.Config
 {
     [Serializable]
     public class SpawnTuningData
     {
-        public GameObject CollectiblePrefab;
+        public AssetReferenceGameObject CollectiblePrefab;
 
         public float FirstSpawnZ = 55f;
         [Tooltip("No props are placed within this distance of the finish line.")]

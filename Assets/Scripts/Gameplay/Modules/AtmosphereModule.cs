@@ -1,5 +1,8 @@
 using CrazyLabs.Levels.Data;
+using Cysharp.Threading.Tasks;
+using gSDK;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CrazyLabs.Gameplay.Modules
 {
@@ -7,7 +10,8 @@ namespace CrazyLabs.Gameplay.Modules
     {
         private readonly Transform _followTarget;
         private readonly Vector3 _effectOffset;
-        private readonly GameObject _ambientEffect;
+        private GameObject _ambientEffect;
+        private bool _disposed;
 
         
         public AtmosphereModule(Camera cam, Light sun, Transform followTarget, Vector3 effectOffset, LevelData level, Transform parent)
@@ -26,18 +30,38 @@ namespace CrazyLabs.Gameplay.Modules
             cam.backgroundColor = level.SkyColor;
             sun.color = level.SunColor;
             
-            if (level.AmbientEffect != null)
-            {
-                var origin = followTarget != null ? followTarget.position + effectOffset : effectOffset;
-                _ambientEffect = Object.Instantiate(level.AmbientEffect, origin, Quaternion.identity, parent);
-            }
+            LoadAmbientEffect(level.AmbientEffect, parent).Forget();
         }
 
         public void Dispose()
         {
-            if (_ambientEffect)
+            _disposed = true;
+            AddressableInstance.ReleaseOrDestroy(_ambientEffect);
+        }
+
+        private async UniTaskVoid LoadAmbientEffect(AssetReferenceGameObject reference, Transform parent)
+        {
+            if (reference == null || !reference.RuntimeKeyIsValid())
             {
-                Object.Destroy(_ambientEffect);
+                return;
+            }
+
+            try
+            {
+                var instance = await AddressableInstance.Instantiate(reference.RuntimeKey, parent);
+
+                if (_disposed)
+                {
+                    AddressableInstance.ReleaseOrDestroy(instance);
+                    return;
+                }
+
+                _ambientEffect = instance;
+                Tick();
+            }
+            catch (System.Exception exception)
+            {
+                Debug.LogError($"AtmosphereModule: couldn't load the ambient effect. {exception.Message}");
             }
         }
 

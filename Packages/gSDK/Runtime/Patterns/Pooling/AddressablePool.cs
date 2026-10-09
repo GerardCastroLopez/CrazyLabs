@@ -16,14 +16,14 @@ namespace gSDK.Patterns.Pooling
         public AddressablePool(string poolId, AssetReference viewRef, int maxInstances, bool canGrow = true)
         {
             _prefabHandle = Addressables.LoadAssetAsync<GameObject>(viewRef);
-            _prefab = _prefabHandle.Task.AsUniTask();
+            _prefab = _prefabHandle.Task.AsUniTask().Preserve();
             CommonInit(poolId, maxInstances, canGrow);
         }
 
         public AddressablePool(string viewId, int maxInstances, bool canGrow = true)
         {
             _prefabHandle = Addressables.LoadAssetAsync<GameObject>(viewId);
-            _prefab = _prefabHandle.Task.AsUniTask();
+            _prefab = _prefabHandle.Task.AsUniTask().Preserve();
             CommonInit(viewId, maxInstances, canGrow);
         }
 
@@ -49,17 +49,28 @@ namespace gSDK.Patterns.Pooling
         {
             await _prefab;
 
-            var instance = Object.Instantiate(_prefab.AsTask().Result, _poolParentTr);
+            var instance = Object.Instantiate(_prefabHandle.Result, _poolParentTr);
             instance.SetActive(false);
 
-            return instance.GetComponent<T>();
+            var component = instance.GetComponent<T>();
+
+            if (!component)
+            {
+                Object.Destroy(instance);
+                throw new System.InvalidOperationException($"'{instance.name}' has no {typeof(T).Name} component, so it can't be used by pool '{_poolParentTr.name}'");
+            }
+
+            return component;
         }
 
         protected override void InternalDispose(List<T> list)
         {
             foreach(var item in list)
             {
-                Object.Destroy(item.gameObject);
+                if (item && item.gameObject)
+                {
+                    Object.Destroy(item.gameObject);
+                }
             }
 
             if(_poolParentTr != null)

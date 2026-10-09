@@ -6,6 +6,7 @@ using CrazyLabs.Gameplay.Track;
 using Cysharp.Threading.Tasks;
 using gSDK.Patterns.Pooling;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CrazyLabs.Gameplay.Modules
 {
@@ -22,17 +23,18 @@ namespace CrazyLabs.Gameplay.Modules
         private static readonly int[] kQuadTriangles = { 0, 2, 1, 1, 2, 3 };
 
         private readonly List<Collectible> _collectibles = new();
-        private readonly Dictionary<GameObject, ComponentPool<Obstacle>> _obstaclePools = new();
-        private readonly Dictionary<GameObject, ComponentPool<Transform>> _sceneryPools = new();
-        private readonly Dictionary<GameObject, Vector3> _sceneryBaseScales = new();
-        private ComponentPool<Collectible> _collectiblePool;
-        private Transform _templatesRoot, _propsRoot;
+        private readonly Dictionary<string, AddressablePool<Obstacle>> _obstaclePools = new();
+        private readonly Dictionary<string, AddressablePool<Transform>> _sceneryPools = new();
+        private readonly Dictionary<Transform, Vector3> _sceneryBaseScales = new();
+        private readonly HashSet<string> _failedPools = new();
+        private AddressablePool<Collectible> _collectiblePool;
+        private Transform _propsRoot;
         private LevelData _poolsLevel;
         private Transform _generated;
         private LevelData _level;
         private GroundTuningData _ground;
         private SpawnTuningData _spawn;
-        private GameObject[] _crashObstacles, _slowObstacles, _scenery;
+        private AssetReferenceGameObject[] _crashObstacles, _slowObstacles, _scenery;
 
         
         public void BuildLevel(LevelData levelData, GroundTuningData ground, SpawnTuningData spawn, SlingshotTuningData slingshot)
@@ -90,7 +92,6 @@ namespace CrazyLabs.Gameplay.Modules
             DisposePools();
             _poolsLevel = _level;
 
-            _templatesRoot = CreateRoot("Pool Templates");
             _propsRoot ??= CreateRoot("Props");
 
             _crashObstacles.Foreach(CreateObstaclePool);
@@ -106,53 +107,32 @@ namespace CrazyLabs.Gameplay.Modules
             return root;
         }
 
-        private void CreateObstaclePool(GameObject prefab)
+        private void CreateObstaclePool(AssetReferenceGameObject reference)
         {
-            if (_obstaclePools.ContainsKey(prefab))
-            {
-                return;
-            }
+            string key = KeyOf(reference);
 
-            if (!prefab.TryGetComponent(out Obstacle obstacle))
+            if (!_obstaclePools.ContainsKey(key))
             {
-                Debug.LogError($"'{prefab.name}' has no Obstacle component, so it can't be used as an obstacle", prefab);
-                return;
+                _obstaclePools.Add(key, new AddressablePool<Obstacle>(key, reference, 0));
             }
-
-            var pool = new ComponentPool<Obstacle>();
-            pool.Init(obstacle, 0);
-            _obstaclePools.Add(prefab, pool);
         }
 
-        private void CreateSceneryPool(GameObject prefab)
+        private void CreateSceneryPool(AssetReferenceGameObject reference)
         {
-            if (_sceneryPools.ContainsKey(prefab))
+            string key = KeyOf(reference);
+
+            if (!_sceneryPools.ContainsKey(key))
             {
-                return;
+                _sceneryPools.Add(key, new AddressablePool<Transform>(key, reference, 0));
             }
-
-            _sceneryBaseScales.Add(prefab, prefab.transform.localScale);
-
-            var pool = new ComponentPool<Transform>();
-            pool.Init(prefab.transform, 0);
-            _sceneryPools.Add(prefab, pool);
         }
 
         private void CreateCollectiblePool()
         {
-            if (!_spawn.CollectiblePrefab)
+            if (IsValid(_spawn.CollectiblePrefab))
             {
-                return;
+                _collectiblePool = new AddressablePool<Collectible>(KeyOf(_spawn.CollectiblePrefab), _spawn.CollectiblePrefab, 0);
             }
-
-            if (!_spawn.CollectiblePrefab.TryGetComponent(out Collectible collectible))
-            {
-                Debug.LogError($"'{_spawn.CollectiblePrefab.name}' has no Collectible component, so it can't be used as a collectible", _spawn.CollectiblePrefab);
-                return;
-            }
-
-            _collectiblePool = new();
-            _collectiblePool.Init(collectible, 0);
         }
 
         private void ReturnPropsToPools()
@@ -173,42 +153,69 @@ namespace CrazyLabs.Gameplay.Modules
             _sceneryPools.Values.Foreach(pool => pool.Dispose());
             _sceneryPools.Clear();
             _sceneryBaseScales.Clear();
-
-            if (_templatesRoot)
-            {
-                Destroy(_templatesRoot.gameObject);
-            }
+            _failedPools.Clear();
 
             _poolsLevel = null;
         }
 
         private void ValidatePrefabs()
         {
-            _crashObstacles = RemoveMissing(_level.CrashObstacles, nameof(_crashObstacles));
-            _slowObstacles = RemoveMissing(_level.SlowObstacles, nameof(_slowObstacles));
-            _scenery = RemoveMissing(_level.Scenery, nameof(_scenery));
+            _crashObstacles = FilterValid(_level.CrashObstacles, nameof(_crashObstacles));
+            _slowObstacles = FilterValid(_level.SlowObstacles, nameof(_slowObstacles));
+            _scenery = FilterValid(_level.Scenery, nameof(_scenery));
         }
 
-        private GameObject[] RemoveMissing(GameObject[] prefabs, string label)
+        private AssetReferenceGameObject[] FilterValid(AssetReferenceGameObject[] references, string label)
         {
-            if (prefabs == null)
+            if (references == null)
             {
-                return Array.Empty<GameObject>();
+                return Array.Empty<AssetReferenceGameObject>();
             }
 
-            var valid = new List<GameObject>(prefabs.Length);
-            prefabs.Foreach(p => {
-                
-                if (p)
+            var valid = new List<AssetReferenceGameObject>(references.Length);
+            references.Foreach(r => {
+
+                if (IsValid(r))
                 {
-                    valid.Add(p);
+                    valid.Add(r);
                 }
             });
-            
-            if (valid.Count != prefabs.Length)
-                Debug.LogWarning($"TrackBuilder: {prefabs.Length - valid.Count} unassigned entries in '{label}' were ignored.", this);
-            
+
+            if (valid.Count != references.Length)
+            {
+                Debug.LogWarning($"TrackModule: {references.Length - valid.Count} unassigned entries in '{label}' were ignored.", this);
+            }
+
             return valid.ToArray();
+        }
+
+        private static bool IsValid(AssetReference reference)
+        {
+            return reference != null && reference.RuntimeKeyIsValid();
+        }
+
+        private static string KeyOf(AssetReference reference)
+        {
+            return reference.RuntimeKey.ToString();
+        }
+
+        private async UniTask<T> TryGet<T>(AddressablePool<T> pool, string key) where T : Component
+        {
+            if (_failedPools.Contains(key))
+            {
+                return null;
+            }
+
+            try
+            {
+                return await pool.GetAsync();
+            }
+            catch (Exception exception)
+            {
+                _failedPools.Add(key);
+                Debug.LogError($"TrackModule: couldn't load '{key}', it will be skipped. {exception.Message}", this);
+                return null;
+            }
         }
 
         private void BuildGround()
@@ -288,9 +295,9 @@ namespace CrazyLabs.Gameplay.Modules
             await SpawnScenery(rng);
         }
 
-        private async UniTask SpawnObstacleGroup(GameObject[] prefabs, float z, System.Random rng)
+        private async UniTask SpawnObstacleGroup(AssetReferenceGameObject[] references, float z, System.Random rng)
         {
-            if (prefabs == null || prefabs.Length == 0)
+            if (references == null || references.Length == 0)
             {
                 return;
             }
@@ -298,7 +305,7 @@ namespace CrazyLabs.Gameplay.Modules
             int count = rng.NextDouble() < _level.PairChance ? 2 : 1;
             float usable = Profile.HalfWidth - _spawn.LaneEdgeMargin;
             float firstX = Mathf.Lerp(-usable, usable, (float)rng.NextDouble());
-            await PlaceObstacle(prefabs[rng.Next(prefabs.Length)], firstX, z, rng);
+            await PlaceObstacle(references[rng.Next(references.Length)], firstX, z, rng);
 
             if (count == 2)
             {
@@ -306,7 +313,7 @@ namespace CrazyLabs.Gameplay.Modules
                 float secondX = firstX > 0f ? firstX - gap : firstX + gap;
                 if (Mathf.Abs(secondX) <= usable)
                 {
-                    await PlaceObstacle(prefabs[rng.Next(prefabs.Length)], secondX, z, rng);
+                    await PlaceObstacle(references[rng.Next(references.Length)], secondX, z, rng);
                 }
             }
         }
@@ -327,7 +334,13 @@ namespace CrazyLabs.Gameplay.Modules
                 float rowZ = z + i * _spawn.CollectibleSpacing;
                 float x = Mathf.Clamp(laneX + Mathf.Sin(i * _spawn.SwayFrequency) * sway, -usable, usable);
 
-                var collectible = await _collectiblePool.GetAsync();
+                var collectible = await TryGet(_collectiblePool, KeyOf(_spawn.CollectiblePrefab));
+
+                if (!collectible)
+                {
+                    return;
+                }
+
                 collectible.transform.SetParent(_propsRoot, false);
                 collectible.transform.SetPositionAndRotation(GroundPoint(x, rowZ, _spawn.CollectibleHeight), Quaternion.identity);
                 collectible.Init();
@@ -346,27 +359,47 @@ namespace CrazyLabs.Gameplay.Modules
             {
                 float side = rng.NextDouble() < kCoinFlip ? -1f : 1f;
                 float x = side * (Profile.HalfWidth + _spawn.SceneryMinDistance + Between(rng, 0f, _spawn.SceneryExtraDistance));
-                var prefab = _scenery[rng.Next(_scenery.Length)];
+                string key = KeyOf(_scenery[rng.Next(_scenery.Length)]);
 
-                if (!_sceneryPools.TryGetValue(prefab, out var pool))
+                if (!_sceneryPools.TryGetValue(key, out var pool))
                 {
                     continue;
                 }
 
-                var instance = await pool.GetAsync();
+                var instance = await TryGet(pool, key);
+
+                if (!instance)
+                {
+                    continue;
+                }
+
+                if (!_sceneryBaseScales.TryGetValue(instance, out var baseScale))
+                {
+                    baseScale = instance.localScale;
+                    _sceneryBaseScales.Add(instance, baseScale);
+                }
+
                 Place(instance, x, z, rng);
-                instance.localScale = _sceneryBaseScales[prefab] * Between(rng, _spawn.SceneryScaleRange);
+                instance.localScale = baseScale * Between(rng, _spawn.SceneryScaleRange);
             }
         }
 
-        private async UniTask PlaceObstacle(GameObject prefab, float x, float z, System.Random rng)
+        private async UniTask PlaceObstacle(AssetReferenceGameObject reference, float x, float z, System.Random rng)
         {
-            if (!_obstaclePools.TryGetValue(prefab, out var pool))
+            string key = KeyOf(reference);
+
+            if (!_obstaclePools.TryGetValue(key, out var pool))
             {
                 return;
             }
 
-            var obstacle = await pool.GetAsync();
+            var obstacle = await TryGet(pool, key);
+
+            if (!obstacle)
+            {
+                return;
+            }
+
             obstacle.ResetState();
             Place(obstacle.transform, x, z, rng);
         }

@@ -78,11 +78,11 @@ namespace gSDK.Patterns.Pooling
 				tasksList.Add(SpawnInstance(false));
 			}
 
-			await UniTask.WhenAll(tasksList);
+			var instances = await UniTask.WhenAll(tasksList);
 
-			foreach(var task in tasksList)
+			foreach(var instance in instances)
 			{
-				_availableList.Add(task.AsTask().Result);
+				_availableList.Add(instance);
 			}
 		}
 

@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CrazyLabs.Gameplay.Config
 {
     [Serializable]
     public class EffectsTuningData
     {
-        public GameObject PickupEffect, SoftHitEffect, CrashEffect, FireworkEffect, ConfettiEffect, SlideTrail;
+        public AssetReferenceGameObject PickupEffect, SoftHitEffect, CrashEffect, FireworkEffect, ConfettiEffect, SlideTrail;
         public float OneShotLifetime = 6f;
         public int InitialPoolSize = 2;
         public float HitEffectHeight = 1f;
