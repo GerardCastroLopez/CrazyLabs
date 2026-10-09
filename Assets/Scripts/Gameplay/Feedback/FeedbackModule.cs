@@ -9,10 +9,10 @@ namespace CrazyLabs.Gameplay.Feedback
         private readonly ParticleModule _particles;
 
 
-        public FeedbackModule(AudioSource effects, AudioSource slideLoop, Transform player, AudioTuningData audioTuning, EffectsTuningData effectsTuning)
+        public FeedbackModule(AudioSource effects, AudioSource slideLoop, Transform player, ParticleSystem speedLines, AudioTuningData audioTuning, EffectsTuningData effectsTuning)
         {
             _audio = new(effects, slideLoop, audioTuning);
-            _particles = new(player, effectsTuning);
+            _particles = new(player, speedLines, effectsTuning);
         }
 
         public void Tick(bool sliding, float speedNormalized)

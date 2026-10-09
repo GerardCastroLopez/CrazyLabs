@@ -12,6 +12,7 @@ namespace CrazyLabs.Gameplay
         [SerializeField] private Light _sun;
         [SerializeField] private Vector3 _atmosphereEffectOffset = new(0f, 10f, 10f);
         [SerializeField] private TrackModule _trackModule;
+        [SerializeField] private ParticleSystem _speedLines;
         
         private AtmosphereModule _atmosphere;
         private CameraModule _camera;
@@ -30,19 +31,19 @@ namespace CrazyLabs.Gameplay
 
         protected override async UniTask WillShow()
         {
-            if (_controller.MustLoadLevel)
-            {
-                _atmosphere?.Dispose();
-                _atmosphere = new(_cam, _sun, _controller.Player.View.transform, _atmosphereEffectOffset, _controller.Level, transform);
-                _trackModule.BuildLevel(_controller.Level, _controller.GroundTuning, _controller.SpawnTuning, _controller.SlingshotTuning);
-            }
-
             if (_camera == null)
             {
                 var playerTransform = _controller.Player.View.transform;
 
                 _camera = new(_cam, playerTransform, _controller.CameraTuning);
-                _feedback = new(gameObject.AddComponent<AudioSource>(), gameObject.AddComponent<AudioSource>(), playerTransform, _controller.AudioTuning, _controller.EffectsTuning);
+                _feedback = new(gameObject.AddComponent<AudioSource>(), gameObject.AddComponent<AudioSource>(), playerTransform, _speedLines, _controller.AudioTuning, _controller.EffectsTuning);
+            }
+
+            if (_controller.MustLoadLevel)
+            {
+                _atmosphere?.Dispose();
+                _atmosphere = new(_cam, _sun, _controller.Player.View.transform, _atmosphereEffectOffset, _controller.Level, transform);
+                _trackModule.BuildLevel(_controller.Level, _controller.GroundTuning, _controller.SpawnTuning, _controller.SlingshotTuning);
             }
 
             await RestartRun();

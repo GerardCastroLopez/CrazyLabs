@@ -15,5 +15,6 @@ namespace CrazyLabs.Gameplay.Config
         public float ConfettiHeight = 7f;
         public Vector3 TrailLocalPosition = new(0f, 0.15f, -0.6f);
         public Vector2 TrailIntensity = new(0.25f, 1.6f);
+        public SpeedLinesTuningData SpeedLines = new();
     }
 }

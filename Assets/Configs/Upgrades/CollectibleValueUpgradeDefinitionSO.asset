@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     Type: 3
-    DisplayName: Currency Value
-    Description: Each croissant is worth more.
+    DisplayName: Collectible Value
+    Description: Each collectible is worth more.
     MaxLevel: 4
     BaseCost: 40
     CostGrowth: 1.8

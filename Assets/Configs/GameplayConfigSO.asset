@@ -108,6 +108,9 @@ MonoBehaviour:
     ConfettiHeight: 7
     TrailLocalPosition: {x: 0, y: 0.15, z: -0.6}
     TrailIntensity: {x: 0.25, y: 1.6}
+    SpeedLines:
+      MinSpeedNormalized: 0.15
+      MaxRate: 160
   Flow:
     ResultPopupDelay: 1.5
   Ground:

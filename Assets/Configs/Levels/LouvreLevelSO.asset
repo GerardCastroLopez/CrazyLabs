@@ -56,7 +56,6 @@ MonoBehaviour:
     - {fileID: 6880571442343719712, guid: cf30064fb381431fbcacfbc8352c455a, type: 3}
     SlowObstacles:
     - {fileID: 8441421672194634764, guid: a4c79203adb14dceb7eee75a9adc7f4b, type: 3}
-    - {fileID: 7650404457325782430, guid: 10ec5f65e6544e92b1f31efd16ebec14, type: 3}
     - {fileID: 3462034631412878799, guid: e5a36272058d419288a94941933e5500, type: 3}
     Scenery:
     - {fileID: 1591895259457344932, guid: 69161cb72b193462f988c122004263c5, type: 3}

@@ -19,22 +19,26 @@ namespace CrazyLabs.Gameplay.Feedback
         private readonly List<GameObject> _templates = new();
         private readonly ParticleSystem[] _trail;
         private readonly float[] _trailBaseRates;
+        private readonly ParticleSystem _speedLines;
 
         private bool _disposed;
 
 
-        public ParticleModule(Transform player, EffectsTuningData tuning)
+        public ParticleModule(Transform player, ParticleSystem speedLines, EffectsTuningData tuning)
         {
             _player = player;
             _tuning = tuning;
 
             _trail = CreateTrail(out _trailBaseRates);
+            _speedLines = speedLines;
 
             EventDispatcher.Register(this);
         }
 
         public void Tick(bool sliding, float speedNormalized)
         {
+            TickSpeedLines(sliding, speedNormalized);
+
             for (int i = 0; i < _trail.Length; i++)
             {
                 var system = _trail[i];
@@ -94,6 +98,11 @@ namespace CrazyLabs.Gameplay.Feedback
                     Object.Destroy(system.gameObject);
                 }
             }
+
+            if (_speedLines)
+            {
+                _speedLines.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
         }
 
         private ParticleSystem[] CreateTrail(out float[] baseRates)
@@ -119,6 +128,25 @@ namespace CrazyLabs.Gameplay.Feedback
             }
 
             return systems;
+        }
+
+        private void TickSpeedLines(bool sliding, float speedNormalized)
+        {
+            if (!_speedLines)
+            {
+                return;
+            }
+
+            var settings = _tuning.SpeedLines;
+            float intensity = sliding ? Mathf.InverseLerp(settings.MinSpeedNormalized, 1f, speedNormalized) : 0f;
+
+            if (intensity > 0f && !_speedLines.isPlaying)
+            {
+                _speedLines.Play();
+            }
+
+            var emission = _speedLines.emission;
+            emission.rateOverTime = settings.MaxRate * intensity;
         }
 
         private async UniTaskVoid Celebrate(Vector3 origin)
