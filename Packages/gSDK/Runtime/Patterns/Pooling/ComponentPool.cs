@@ -41,12 +41,15 @@ namespace gSDK.Patterns.Pooling
 
         protected override void InternalDispose(List<T> list)
         {
-            foreach(var item in list)
-            {
-                Object.Destroy(item.gameObject);
-            }
+            list.Foreach(item => {
+                
+                if (item && item.gameObject)
+                {
+                    Object.Destroy(item.gameObject);
+                }
+            });
 
-            if(_poolParentTr != null)
+            if (_poolParentTr)
             {
                 Object.Destroy(_poolParentTr.gameObject);
                 _poolParentTr = null;

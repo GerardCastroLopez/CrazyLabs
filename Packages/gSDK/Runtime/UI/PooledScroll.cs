@@ -19,12 +19,17 @@ namespace gSDK.UI
        private Vector2 _instanceSize, _itemSpace;
        private int _instancesPerRowsOrColumns, _itemsCount;
        private float _allInstancesSize;
+       private readonly bool _isHorizontal, _originalHorizontal, _originalVertical;
+       private bool _fixContentIfFits = false;
+       private float _contentMainSize;
 
 
        public PooledScroll(T prefab, ScrollRect scroll, Action<T, int> onUpdate)
        {
           _scroll = scroll;
           _onUpdate = onUpdate;
+          _isHorizontal = _originalHorizontal = scroll.horizontal;
+          _originalVertical = scroll.vertical;
 
           _layoutGrp = scroll.content.GetComponent<LayoutGroup>();
           _contentSizeFitter = scroll.content.GetComponent<ContentSizeFitter>();
@@ -35,7 +40,18 @@ namespace gSDK.UI
 
           scroll.onValueChanged.AddListener(OnScroll);
        }
-       
+
+       public void FixContentIfFits(bool fix)
+       {
+          _fixContentIfFits = fix;
+          var viewportRect = _scroll.viewport.rect;
+          float viewportSize = _isHorizontal ? viewportRect.width : viewportRect.height;
+          bool fixContent = _fixContentIfFits && _contentMainSize <= viewportSize;
+
+          _scroll.horizontal = !fixContent && _originalHorizontal;
+          _scroll.vertical = !fixContent && _originalVertical;
+       }
+
        public void ForEach(Action<T, int> callback)
        {
           ForEach<T>(callback);
@@ -98,7 +114,7 @@ namespace gSDK.UI
           Vector2 position = _scroll.content.anchoredPosition;
           if (scrollToBeginning)
           {
-             if (_scroll.horizontal)
+             if (_isHorizontal)
              {
                 position.x = 0f;
              }
@@ -121,6 +137,7 @@ namespace gSDK.UI
           _contentSizeFitter.enabled = _layoutGrp.enabled = false;
 
           ModifyContentSize();
+          FixContentIfFits(_fixContentIfFits);
           
           _scroll.content.anchoredPosition = position;
           UpdateItems(true);
@@ -134,7 +151,7 @@ namespace gSDK.UI
              _instanceSize = prefabTr.rect.size;
              _itemSpace = Vector2.zero;
 
-             if (_scroll.horizontal)
+             if (_isHorizontal)
              {
                 _itemSpace.x = group.spacing;
              }
@@ -152,12 +169,12 @@ namespace gSDK.UI
 
              if (gridLayout.constraint == GridLayoutGroup.Constraint.Flexible)
              {
-                float secondaryItemSizeWithSpacing = _scroll.horizontal
+                float secondaryItemSizeWithSpacing = _isHorizontal
                    ? (gridLayout.cellSize.y + gridLayout.spacing.y)
                    : (gridLayout.cellSize.x + gridLayout.spacing.x);
                 float viewportOtherSize;
 
-                if (_scroll.horizontal)
+                if (_isHorizontal)
                 {
                    viewportOtherSize = _scroll.viewport.rect.height;
                    gridLayout.constraint = GridLayoutGroup.Constraint.FixedRowCount;
@@ -177,8 +194,8 @@ namespace gSDK.UI
           }
 
           var viewportRect = _scroll.viewport.rect;
-          float viewportSize = _scroll.horizontal ? viewportRect.width : viewportRect.height;
-          float instanceSizeWithSpacing = _scroll.horizontal ? _instanceSize.x + _itemSpace.x : _instanceSize.y + _itemSpace.y;
+          float viewportSize = _isHorizontal ? viewportRect.width : viewportRect.height;
+          float instanceSizeWithSpacing = _isHorizontal ? _instanceSize.x + _itemSpace.x : _instanceSize.y + _itemSpace.y;
           int visibleRowsOrColumns = Mathf.CeilToInt(viewportSize / instanceSizeWithSpacing) +1;
 
           _allInstancesSize = instanceSizeWithSpacing * visibleRowsOrColumns;
@@ -218,7 +235,7 @@ namespace gSDK.UI
           var contentSize = Vector2.zero;
           int itemsPerEntry = Mathf.CeilToInt((float)_itemsCount / _instancesPerRowsOrColumns);
 
-          if (_scroll.horizontal)
+          if (_isHorizontal)
           {
              contentSize.x = (_layoutGrp.padding.left + _layoutGrp.padding.right) + (_instanceSize.x * itemsPerEntry) + (_itemSpace.x * (itemsPerEntry -1));
 
@@ -237,6 +254,7 @@ namespace gSDK.UI
              }
           }
 
+          _contentMainSize = _isHorizontal ? contentSize.x : contentSize.y;
           _scroll.content.sizeDelta = contentSize;
        }
 
@@ -263,7 +281,7 @@ namespace gSDK.UI
              var itemPosition = _scroll.viewport.InverseTransformPoint(itemRect.position);
              int movesCount;
 
-             if (_scroll.horizontal)
+             if (_isHorizontal)
              {
                 movesCount = Mathf.RoundToInt(Mathf.Abs(itemPosition.x) / _allInstancesSize) * Math.Sign(itemPosition.x);
              }
@@ -287,7 +305,7 @@ namespace gSDK.UI
 
              itemPosition = itemRect.localPosition;
 
-             if (_scroll.horizontal)
+             if (_isHorizontal)
              {
                 itemPosition.x -= (movesCount * _allInstancesSize);
              }
