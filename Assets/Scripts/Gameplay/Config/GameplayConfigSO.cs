@@ -14,5 +14,6 @@ namespace CrazyLabs.Gameplay.Config
         public FlowTuningData Flow;
         public GroundTuningData Ground;
         public SpawnTuningData Spawn;
+        public PickupFeedbackTuningData PickupFeedback;
     }
 }

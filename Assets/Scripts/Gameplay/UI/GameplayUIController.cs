@@ -1,7 +1,9 @@
 using System;
+using CrazyLabs.Gameplay.Config;
 using gSDK;
 using gSDK.MVC;
 using gSDK.UI;
+using UnityEngine;
 
 namespace CrazyLabs.Gameplay.UI
 {
@@ -14,6 +16,8 @@ namespace CrazyLabs.Gameplay.UI
         internal Reactive<float> Distance => _gameplayController.Distance;
         internal Reactive<float> Speed => _gameplayController.Speed;
         internal Reactive<bool> ShowTutorial => _gameplayController.ShowTutorial;
+        internal PickupFeedbackTuningData PickupFeedback => _gameplayController.PickupFeedbackTuning;
+        internal Camera Camera => _gameplayController.Camera;
         internal float TrackLength => _gameplayController.Level.TrackLength;
         
         

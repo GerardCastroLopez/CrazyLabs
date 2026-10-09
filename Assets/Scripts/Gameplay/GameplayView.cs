@@ -35,6 +35,7 @@ namespace CrazyLabs.Gameplay
             {
                 var playerTransform = _controller.Player.View.transform;
 
+                _controller.Camera = _cam;
                 _camera = new(_cam, playerTransform, _controller.CameraTuning);
                 _feedback = new(gameObject.AddComponent<AudioSource>(), gameObject.AddComponent<AudioSource>(), playerTransform, _speedLines, _controller.AudioTuning, _controller.EffectsTuning);
             }

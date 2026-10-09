@@ -35,6 +35,8 @@ namespace CrazyLabs.Gameplay
         internal SlingshotTuningData SlingshotTuning => _config.Slingshot;
         internal GroundTuningData GroundTuning => _config.Ground;
         internal SpawnTuningData SpawnTuning => _config.Spawn;
+        internal PickupFeedbackTuningData PickupFeedbackTuning => _config.PickupFeedback;
+        internal Camera Camera { get; set; }
         internal FlowTuningData FlowTuning => _config.Flow;
         internal bool CanPause => _player != null && _player.CanPause;
         

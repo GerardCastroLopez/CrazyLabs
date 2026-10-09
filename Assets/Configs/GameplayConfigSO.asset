@@ -152,6 +152,13 @@ MonoBehaviour:
     SurroundHalfWidth: 90
     SurroundYOffset: -0.06
     UvTileSize: 6
+  PickupFeedback:
+    HudPunchScale: 0.3
+    HudPunchDuration: 0.25
+    TextRiseDistance: 140
+    TextDuration: 0.8
+    TextStartScale: 0.6
+    MaxActiveTexts: 8
   Spawn:
     CollectiblePrefab:
       m_AssetGUID: 4eb6549e0eb440c297450571544f0ce0

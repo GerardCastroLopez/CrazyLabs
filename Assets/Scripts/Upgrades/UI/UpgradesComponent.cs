@@ -1,5 +1,6 @@
 using CrazyLabs.Upgrades;
 using CrazyLabs.Upgrades.Data;
+using DG.Tweening;
 using gSDK;
 using gSDK.UI;
 using TMPro;
@@ -14,10 +15,15 @@ namespace CrazyLabs.MainMenu.UI
         [SerializeField] private UpgradeRowComponent _upgradePrefab;
         [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private AudioClip _upgradeClip;
+        [Header("Currency count animation")]
+        [SerializeField] private float _currencyCountDelay = 0.4f;
+        [SerializeField] private float _currencyCountDuration = 0.8f;
+        [SerializeField] private Ease _currencyCountEase = Ease.OutCubic;
 
         private PooledScroll<UpgradeRowComponent> _scroll;
         private UpgradesModule _module;
         private AudioSource _audioSource;
+        private Tween _currencyTween;
 
 
         void Awake()
@@ -32,7 +38,42 @@ namespace CrazyLabs.MainMenu.UI
             _module = upgrades;
             _scroll.SetItemsCount(_module.Upgrades.Count, true);
             _scroll.FixContentIfFits(true);
-            currency.AddListener(c => _currencyTxt.text = c.ToString(), true);
+            currency.AddListener(OnCurrencyChanged, true);
+        }
+
+        public void ForceCurrency(int count)
+        {
+            _currencyTxt.text = count.ToString();
+        }
+
+        public void AnimateCurrency(int from, int to)
+        {
+            _currencyTween?.Kill();
+
+            if (from == to)
+            {
+                ForceCurrency(to);
+                return;
+            }
+
+            int shown = from;
+            ForceCurrency(from);
+            _currencyTween = DOTween.To(() => shown, value => {
+
+                shown = value;
+                ForceCurrency(value);
+            }, to, _currencyCountDuration).SetDelay(_currencyCountDelay).SetEase(_currencyCountEase).SetUpdate(true).SetTarget(this);
+        }
+
+        private void OnCurrencyChanged(int currency)
+        {
+            _currencyTween?.Kill();
+            ForceCurrency(currency);
+        }
+
+        private void OnDestroy()
+        {
+            _currencyTween?.Kill();
         }
 
         private void OnScrollItemUpdate(UpgradeRowComponent row, int index)

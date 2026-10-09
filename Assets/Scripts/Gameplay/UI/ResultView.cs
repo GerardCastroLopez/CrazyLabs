@@ -67,9 +67,17 @@ namespace CrazyLabs.Gameplay.UI
             var result = _controller.Result;
 
             _resultTxt.text = result.IsWin ? _winTitle : _loseTitle;
-            _resultDetailsTxt.text = $"Distance  {result.DistanceMeters:0} m  ({result.Progress01 * 100f:0}%)\nCollectibles  +{result.CoinsCollected}";
+            _resultDetailsTxt.text = $"Distance  {result.DistanceMeters:0} m  ({result.Progress01 * 100f:0}%)\nCurrency  +{result.CoinsCollected}";
 
+            _upgrades.ForceCurrency(_controller.Currency.Value - _controller.Result.CoinsCollected);
             return base.WillShow();
+        }
+
+        protected override void Shown()
+        {
+            base.Shown();
+            
+            _upgrades.AnimateCurrency(_controller.Currency.Value - _controller.Result.CoinsCollected, _controller.Currency.Value);
         }
     }
 }
