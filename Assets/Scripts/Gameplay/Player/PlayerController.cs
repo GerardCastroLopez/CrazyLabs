@@ -18,7 +18,7 @@ namespace CrazyLabs.Gameplay.Player
 {
     public class PlayerController : ViewController<PlayerView>
     {
-        private const float kMetersPerSecondToKmh = 3.6f;
+        private const float kMetersPerSecondToKmh = 1f;
         private const float kMinTrackLength = 1f;
 
         private readonly GameplayController _gameplay;
@@ -35,6 +35,7 @@ namespace CrazyLabs.Gameplay.Player
 
         internal CharacterData Character => _playerService.Character.Value;
         internal float SpeedNormalized => Sled.SpeedNormalized;
+        internal bool CanPause => _stateMachine.Current is AimingState or RunningState;
         internal bool IsAiming => _stateMachine.Current is AimingState;
         internal Vector3 PouchPosition => Sled.Position + Vector3.up * Config.Slingshot.PouchHeight;
 
@@ -71,7 +72,7 @@ namespace CrazyLabs.Gameplay.Player
             Inputs.Tick(deltaTime);
             _stateMachine.Update();
 
-            _gameplay.Speed.Value = Mathf.Round(Sled.Speed * kMetersPerSecondToKmh);
+            _gameplay.Speed.Value = Mathf.Round(Mathf.Max(0f, Sled.Speed - Config.Sled.StallSpeed) * kMetersPerSecondToKmh);
             _gameplay.Distance.Value = Mathf.Round(Sled.Distance);
 
             View?.Tick(deltaTime);
@@ -120,6 +121,7 @@ namespace CrazyLabs.Gameplay.Player
             }
 
             EventDispatcher.Raise(new RunEndedEvent(result, Character));
+            _gameplay.OnRunEnded(result);
         }
 
         internal void OnTrigger(Collider other)

@@ -13,20 +13,25 @@ namespace CrazyLabs.MainMenu.UI
         [SerializeField] private TMP_Text _currencyTxt;
         [SerializeField] private UpgradeRowComponent _upgradePrefab;
         [SerializeField] private ScrollRect _scrollRect;
+        [SerializeField] private AudioClip _upgradeClip;
 
         private PooledScroll<UpgradeRowComponent> _scroll;
         private UpgradesModule _module;
+        private AudioSource _audioSource;
 
 
         void Awake()
         {
             _scroll = new(_upgradePrefab, _scrollRect, OnScrollItemUpdate);
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.playOnAwake = false;
         }
 
         public void Init(UpgradesModule upgrades, Reactive<int> currency)
         {
             _module = upgrades;
             _scroll.SetItemsCount(_module.Upgrades.Count, true);
+            _scroll.FixContentIfFits(true);
             currency.AddListener(c => _currencyTxt.text = c.ToString(), true);
         }
 
@@ -41,6 +46,7 @@ namespace CrazyLabs.MainMenu.UI
         {
             if (_module.TryUpgrade(upgradeType))
             {
+                _audioSource.PlayOneShot(_upgradeClip);
                 _scroll.ForEach((row, _) => RefreshRow(row, row.UpgradeType));
             }
         }

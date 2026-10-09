@@ -1,3 +1,4 @@
+using System;
 using CrazyLabs.Characters;
 using CrazyLabs.Gameplay.Config;
 using CrazyLabs.Gameplay.Controls;
@@ -9,18 +10,22 @@ using CrazyLabs.Player;
 using Cysharp.Threading.Tasks;
 using gSDK;
 using gSDK.MVC;
+using UnityEngine;
 
 namespace CrazyLabs.Gameplay
 {
-    public class GameplayController : ViewController
+    public class GameplayController : ViewController<GameplayView>
     {
+        private const float kPausedTimeScale = 0f;
+        private const float kRunningTimeScale = 1f;
+
         private readonly GameplayConfigSO _config;
         private readonly PlayerService _playerService;
         private readonly LevelService _levelService;
+        private readonly Action<RunResult> _onRunEnded;
         
         private PlayerController _player;
         
-        internal CharacterData Character => _playerService.Character.Value;
         internal LevelData Level { get; private set; }
         internal bool MustLoadLevel { get; private set; }
         internal PlayerController Player => _player;
@@ -28,6 +33,10 @@ namespace CrazyLabs.Gameplay
         internal AudioTuningData AudioTuning => _config.Audio;
         internal EffectsTuningData EffectsTuning => _config.Effects;
         internal SlingshotTuningData SlingshotTuning => _config.Slingshot;
+        internal GroundTuningData GroundTuning => _config.Ground;
+        internal SpawnTuningData SpawnTuning => _config.Spawn;
+        internal FlowTuningData FlowTuning => _config.Flow;
+        internal bool CanPause => _player != null && _player.CanPause;
         
         internal readonly Reactive<int> Currency = new(0);
         internal readonly Reactive<float> Distance = new(0f);
@@ -37,8 +46,9 @@ namespace CrazyLabs.Gameplay
 
 
         
-        public GameplayController(GameplayConfigSO config, PlayerService playerService, LevelService levelService) : base("Prefabs/GameplayView", false)
+        public GameplayController(GameplayConfigSO config, PlayerService playerService, LevelService levelService, Action<RunResult> onRunEnded) : base("Prefabs/GameplayView", false)
         {
+            _onRunEnded = onRunEnded;
             _config = config;
             _playerService = playerService;
             _levelService = levelService;
@@ -59,6 +69,18 @@ namespace CrazyLabs.Gameplay
             await _player.ShowView(animate, force);
         }
 
+        public override async UniTask HideView(bool animate, bool force = false)
+        {
+            SetPaused(false);
+            
+            if (_player != null)
+            {
+                await _player.HideView(animate, force);
+            }
+
+            await base.HideView(animate, force);
+        }
+
         public override void Destroy()
         {
             DestroyPlayer();
@@ -72,28 +94,43 @@ namespace CrazyLabs.Gameplay
 
         internal void StartRun(TrackProfile profile)
         {
-            Currency.Value = 0;
             _player.StartRun(profile);
         }
 
-        private void EnsureLevel()
+        internal UniTask RestartRun()
         {
-            MustLoadLevel = Level == null || !View;
-            
-            var level = _levelService.Level.Value;
-            
-            if (Level != level && Level != null)
-            {
-                Destroy();
-                MustLoadLevel = true;
-            }
+            SetPaused(false);
+            ResetRunValues();
+            return View.RestartRun();
+        }
 
-            Level = level;
+        internal void OnRunEnded(RunResult result)
+        {
+            _onRunEnded?.Invoke(result);
+        }
 
+        internal void SetPaused(bool paused)
+        {
+            Time.timeScale = paused ? kPausedTimeScale : kRunningTimeScale;
+            AudioListener.pause = paused;
+        }
+
+        private void ResetRunValues()
+        {
             Currency.Value = 0;
             Distance.Value = 0f;
             Speed.Value = 0f;
             ShowTutorial.Value = true;
+        }
+
+        private void EnsureLevel()
+        {
+            var level = _levelService.Level.Value;
+
+            MustLoadLevel = Level != level || !View;
+            Level = level;
+
+            ResetRunValues();
         }
         
         private void EnsurePlayer()

@@ -1,9 +1,12 @@
 using CrazyLabs.Gameplay.Config;
+using CrazyLabs.Gameplay.Events;
+using CrazyLabs.Gameplay.Track;
+using gSDK.EventSystem;
 using UnityEngine;
 
 namespace CrazyLabs.Gameplay.Modules
 {
-    public class CameraModule
+    public class CameraModule : IEventHandler<ObstacleHitEvent>
     {
         private const float kShakeSeedRange = 100f;
         private const float kNoiseChannelSpacing = 17.3f;
@@ -19,6 +22,7 @@ namespace CrazyLabs.Gameplay.Modules
         private Vector3 _smoothedPosition;
         private Vector3 _velocity;
         private float _trauma;
+        private float _pitch, _pitchVelocity;
 
 
         public CameraModule(Camera cam, Transform target, CameraTuningData tuning)
@@ -27,6 +31,18 @@ namespace CrazyLabs.Gameplay.Modules
             _target = target;
             _tuning = tuning;
             _shakeSeed = Random.value * kShakeSeedRange;
+
+            EventDispatcher.Register(this);
+        }
+
+        public void Handle(ObstacleHitEvent evt)
+        {
+            Shake(evt.Obstacle.Kind == ObstacleKind.Crash ? _tuning.CrashShake : _tuning.SlowHitShake);
+        }
+
+        public void Dispose()
+        {
+            EventDispatcher.Unregister(this);
         }
 
         public void Shake(float strength)
@@ -38,12 +54,15 @@ namespace CrazyLabs.Gameplay.Modules
         {
             _trauma = 0f;
             _velocity = Vector3.zero;
+            _pitchVelocity = 0f;
+            _pitch = GetTargetPitch();
             _smoothedPosition = GetDesiredPosition();
             ApplyFollow();
         }
 
         public void Tick(float deltaTime, float time, float speedNormalized)
         {
+            _pitch = Mathf.SmoothDampAngle(_pitch, GetTargetPitch(), ref _pitchVelocity, _tuning.FollowSmoothTime, Mathf.Infinity, deltaTime);
             _smoothedPosition = Vector3.SmoothDamp(_smoothedPosition, GetDesiredPosition(), ref _velocity, _tuning.FollowSmoothTime, Mathf.Infinity, deltaTime);
             ApplyFollow();
             ApplyShake(deltaTime, time);
@@ -56,7 +75,7 @@ namespace CrazyLabs.Gameplay.Modules
         {
             var tr = _cam.transform;
             tr.position = _smoothedPosition;
-            tr.rotation = Quaternion.LookRotation(_target.position + _tuning.LookAhead - _smoothedPosition);
+            tr.rotation = Quaternion.LookRotation(_target.position + PitchRotation * _tuning.LookAhead - _smoothedPosition);
         }
 
         private void ApplyShake(float deltaTime, float time)
@@ -85,7 +104,14 @@ namespace CrazyLabs.Gameplay.Modules
         private Vector3 GetDesiredPosition()
         {
             var anchor = new Vector3(_target.position.x * _tuning.LateralFollowFactor, _target.position.y, _target.position.z);
-            return anchor + _tuning.Offset;
+            return anchor + PitchRotation * _tuning.Offset;
+        }
+
+        private Quaternion PitchRotation => Quaternion.Euler(_pitch, 0f, 0f);
+
+        private float GetTargetPitch()
+        {
+            return Mathf.DeltaAngle(0f, _target.eulerAngles.x) * _tuning.PitchFollowFactor;
         }
     }
 }

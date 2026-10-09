@@ -11,5 +11,8 @@ namespace CrazyLabs.Gameplay.Config
         public CameraTuningData CameraRig;
         public AudioTuningData Audio;
         public EffectsTuningData Effects;
+        public FlowTuningData Flow;
+        public GroundTuningData Ground;
+        public SpawnTuningData Spawn;
     }
 }

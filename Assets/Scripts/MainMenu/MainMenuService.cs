@@ -36,6 +36,11 @@ namespace CrazyLabs.MainMenu
             _controller.ShowView(true).Forget();
         }
 
+        public void Show()
+        {
+            _controller.ShowView(true).Forget();
+        }
+
         private void Play()
         {
             _gameplayService.StartGame(() => _controller.HideView(false).Forget());

@@ -20,23 +20,23 @@ MonoBehaviour:
       FinishRunout: 30
       Sections:
       - Length: 70
-        PitchDegrees: 18
+        PitchDegrees: 27
       - Length: 60
-        PitchDegrees: 10
+        PitchDegrees: 15
+      - Length: 50
+        PitchDegrees: 1.5
+      - Length: 100
+        PitchDegrees: 22.5
+      - Length: 60
+        PitchDegrees: 9
       - Length: 50
         PitchDegrees: 1
-      - Length: 100
-        PitchDegrees: 15
-      - Length: 60
-        PitchDegrees: 6
-      - Length: 50
-        PitchDegrees: 0.5
       - Length: 120
-        PitchDegrees: 17
+        PitchDegrees: 25.5
       - Length: 80
-        PitchDegrees: 10
+        PitchDegrees: 15
       - Length: 110
-        PitchDegrees: 14
+        PitchDegrees: 21
     TrackMaterial: {fileID: 2100000, guid: 108e58d0962724aa0bf181a4e3b4db0f, type: 2}
     SurroundMaterial: {fileID: 2100000, guid: 56841dee5934745579938e5b18a09bea, type: 2}
     SkyColor: {r: 0.95, g: 0.82, b: 0.62, a: 1}
@@ -44,11 +44,16 @@ MonoBehaviour:
     SunColor: {r: 1, g: 0.88, b: 0.7, a: 1}
     FogStart: 70
     FogEnd: 230
+    CrashChance: 0.3
+    SlowChance: 0.25
+    PairChance: 0.35
     CrashObstacles:
     - {fileID: 2894539590957533729, guid: 351f3fde2d934178a019908f707e70b6, type: 3}
     - {fileID: 769761599081607123, guid: 69f1e87087ea4fd0a17c6c854250efb8, type: 3}
     - {fileID: 2775634526936860167, guid: 3dab2ae21c854f2f8be0d00b04c8474d, type: 3}
     - {fileID: 8936746295739007755, guid: 01ce74821b7c41638dcff9fbcc3ccf58, type: 3}
+    - {fileID: 8507366715790362578, guid: 0c435ef90833408fac6c4365a9f48c52, type: 3}
+    - {fileID: 6880571442343719712, guid: cf30064fb381431fbcacfbc8352c455a, type: 3}
     SlowObstacles:
     - {fileID: 8441421672194634764, guid: a4c79203adb14dceb7eee75a9adc7f4b, type: 3}
     - {fileID: 7650404457325782430, guid: 10ec5f65e6544e92b1f31efd16ebec14, type: 3}

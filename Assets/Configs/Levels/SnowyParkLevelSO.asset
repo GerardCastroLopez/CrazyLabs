@@ -20,23 +20,23 @@ MonoBehaviour:
       FinishRunout: 30
       Sections:
       - Length: 90
-        PitchDegrees: 16
+        PitchDegrees: 24
       - Length: 70
-        PitchDegrees: 8
+        PitchDegrees: 12
       - Length: 45
-        PitchDegrees: 1.5
+        PitchDegrees: 2
       - Length: 110
-        PitchDegrees: 14
+        PitchDegrees: 21
       - Length: 70
-        PitchDegrees: 5
+        PitchDegrees: 7.5
       - Length: 45
-        PitchDegrees: 0.5
+        PitchDegrees: 1
       - Length: 130
-        PitchDegrees: 16
+        PitchDegrees: 24
       - Length: 90
-        PitchDegrees: 9
+        PitchDegrees: 13.5
       - Length: 100
-        PitchDegrees: 13
+        PitchDegrees: 19.5
     TrackMaterial: {fileID: 2100000, guid: 8ce89e2080189434b9fd697207243a68, type: 2}
     SurroundMaterial: {fileID: 2100000, guid: 21cee4bc406d54d5f81f821686362a69, type: 2}
     SkyColor: {r: 0.78, g: 0.88, b: 0.98, a: 1}
@@ -44,16 +44,15 @@ MonoBehaviour:
     SunColor: {r: 1, g: 0.96, b: 0.88, a: 1}
     FogStart: 70
     FogEnd: 230
+    CrashChance: 0.3
+    SlowChance: 0.25
+    PairChance: 0.35
     CrashObstacles:
     - {fileID: 1618891617458459765, guid: f0aeb18e152042a3ad0d3022bbc621e3, type: 3}
     - {fileID: 5198263597406757380, guid: 49869179bc994e70910820a8437cfc7e, type: 3}
-    - {fileID: 8507366715790362578, guid: 0c435ef90833408fac6c4365a9f48c52, type: 3}
-    - {fileID: 6880571442343719712, guid: cf30064fb381431fbcacfbc8352c455a, type: 3}
-    SlowObstacles:
-    - {fileID: 6379064055324977474, guid: a899bc0cf72e4df1893be7878ff2c737, type: 3}
-    - {fileID: 8156719456167057633, guid: b11ad6a5ed444998a26a30cf0d142240, type: 3}
+    - {fileID: 5198263597406757380, guid: 49869179bc994e70910820a8437cfc7e, type: 3}
+    SlowObstacles: []
     Scenery:
-    - {fileID: 2839191151639932820, guid: bf196eaec6b424f8c91ed23c71d4396e, type: 3}
     - {fileID: 3720778150630461709, guid: 19d4969e4295c43b5917ada9a826faf1, type: 3}
     - {fileID: 6471907253182840009, guid: a8f1fc1bfc240434797852a558dfbf5b, type: 3}
     AmbientEffect: {fileID: 100000, guid: e1e3d990e821947e8b332a2033f25702, type: 3}

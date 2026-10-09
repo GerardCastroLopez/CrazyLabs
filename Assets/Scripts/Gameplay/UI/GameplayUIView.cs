@@ -11,6 +11,11 @@ namespace CrazyLabs.Gameplay.UI
         [SerializeField] GameObject _aimHint;
         
         
+        public void OnPauseTouch()
+        {
+            _controller.Pause();
+        }
+
         protected override UniTask InternalShow(bool animate)
         {
             return UniTask.CompletedTask;

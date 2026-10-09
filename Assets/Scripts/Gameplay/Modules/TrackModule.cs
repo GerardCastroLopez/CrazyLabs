@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CrazyLabs.Gameplay.Config;
 using CrazyLabs.Levels.Data;
 using CrazyLabs.Gameplay.Track;
 using Cysharp.Threading.Tasks;
@@ -10,69 +11,10 @@ namespace CrazyLabs.Gameplay.Modules
 {
     public class TrackModule : MonoBehaviour
     {
-        [Serializable]
-        private class FinishLineSettings
-        {
-            public float PostHeight = 6f;
-            public float PostThickness = 0.6f;
-            [Tooltip("How far the banner hangs below the top of the posts.")]
-            public float BannerDrop = 0.5f;
-            public float BannerHeight = 1.2f;
-            public float BannerThickness = 0.4f;
-            [Tooltip("Size of the trigger the sled crosses to finish.")]
-            public float TriggerHeight = 5f;
-            public float TriggerDepth = 1.5f;
-        }
-        
         public TrackProfile Profile { get; private set; }
         
-        [Header("Shared props")]
-        [SerializeField] private Material _finishMaterial;
-        [SerializeField] private GameObject _collectiblePrefab;
-
-        [Header("Ground")]
-        [SerializeField] private float _trackStripStep = 2f;
-        [SerializeField] private float _surroundStripStep = 6f;
-        [SerializeField] private float _surroundHalfWidth = 90f;
-        [Tooltip("The surround sits slightly below the track so the two never z-fight.")]
-        [SerializeField] private float _surroundYOffset = -0.06f;
-        [Tooltip("Meters of ground covered by one repeat of the ground texture.")]
-        [SerializeField] private float _uvTileSize = 6f;
-
-        [Header("Spawning")]
-        [SerializeField] private float _firstSpawnZ = 55f;
-        [Tooltip("No props are placed within this distance of the finish line.")]
-        [SerializeField] private float _propsStopBeforeFinish = 30f;
-        [Tooltip("Chance that an obstacle row has two obstacles instead of one.")]
-        [SerializeField, Range(0f, 1f)] private float _pairChance = 0.35f;
-        [Tooltip("Props stay this far from the track edge.")]
-        [SerializeField] private float _laneEdgeMargin = 1.5f;
-        [Tooltip("Min and max sideways gap between two obstacles in the same row, so there is always a way through.")]
-        [SerializeField] private Vector2 _pairGap = new(5f, 8f);
-        [Tooltip("Chance that a croissant row wiggles instead of running straight.")]
-        [SerializeField, Range(0f, 1f)] private float _swayChance = 0.5f;
-        [SerializeField] private Vector2 _swayAmount = new(0.6f, 1.4f);
-        [SerializeField] private float _swayFrequency = 0.9f;
-        [Tooltip("Props get a random yaw in [-range, +range] degrees.")]
-        [SerializeField] private float _propYawRange = 25f;
-        [SerializeField] private Vector2 _spawnSpacing = new(11f, 19f);
-        [SerializeField, Range(0f, 1f)] private float _crashChance = 0.3f;
-        [SerializeField, Range(0f, 1f)] private float _slowChance = 0.25f;
-        [SerializeField] private int _collectiblesPerRow = 6;
-        [SerializeField] private float _collectibleSpacing = 2.4f;
-        [SerializeField] private float _collectibleHeight = 0.9f;
-        [Header("Scenery")]
-        [SerializeField] private float _sceneryDensity = 9f;
-        [Tooltip("Multiplies the scenery spacing by a random value in this range.")]
-        [SerializeField] private Vector2 _scenerySpacingJitter = new(0.6f, 1.4f);
-        [Tooltip("Scenery starts this far from the track edge...")]
-        [SerializeField] private float _sceneryMinDistance = 2f;
-        [Tooltip("...and is spread up to this much further out.")]
-        [SerializeField] private float _sceneryExtraDistance = 14f;
-        [SerializeField] private Vector2 _sceneryScaleRange = new(0.8f, 1.5f);
-
-        [Header("Finish line")]
-        [SerializeField] private FinishLineSettings _finishLine = new();
+        [SerializeField] private FinishLine _finish;
+        [SerializeField] private SlingshotVisual _slingshot;
 
         private const int kVerticesPerRow = 2;
         private const int kIndicesPerQuad = 6;
@@ -88,12 +30,15 @@ namespace CrazyLabs.Gameplay.Modules
         private LevelData _poolsLevel;
         private Transform _generated;
         private LevelData _level;
+        private GroundTuningData _ground;
+        private SpawnTuningData _spawn;
         private GameObject[] _crashObstacles, _slowObstacles, _scenery;
 
         
-        
-        public void BuildLevel(LevelData levelData)
+        public void BuildLevel(LevelData levelData, GroundTuningData ground, SpawnTuningData spawn, SlingshotTuningData slingshot)
         {
+            _ground = ground;
+            _spawn = spawn;
             if (_generated)
             {
                 Destroy(_generated.gameObject);
@@ -107,7 +52,13 @@ namespace CrazyLabs.Gameplay.Modules
             ValidatePrefabs();
             EnsurePools();
             BuildGround();
-            BuildFinishLine();
+            PlaceFinishLine();
+            PlaceSlingshot(slingshot);
+        }
+
+        public void TickSlingshot(bool aiming, Vector3 pouchPosition)
+        {
+            _slingshot.Tick(aiming, pouchPosition);
         }
 
         public async UniTask RespawnProps(int seed)
@@ -189,14 +140,14 @@ namespace CrazyLabs.Gameplay.Modules
 
         private void CreateCollectiblePool()
         {
-            if (!_collectiblePrefab)
+            if (!_spawn.CollectiblePrefab)
             {
                 return;
             }
 
-            if (!_collectiblePrefab.TryGetComponent(out Collectible collectible))
+            if (!_spawn.CollectiblePrefab.TryGetComponent(out Collectible collectible))
             {
-                Debug.LogError($"'{_collectiblePrefab.name}' has no Collectible component, so it can't be used as a collectible", _collectiblePrefab);
+                Debug.LogError($"'{_spawn.CollectiblePrefab.name}' has no Collectible component, so it can't be used as a collectible", _spawn.CollectiblePrefab);
                 return;
             }
 
@@ -262,26 +213,28 @@ namespace CrazyLabs.Gameplay.Modules
 
         private void BuildGround()
         {
-            CreateStrip("Track", Profile.HalfWidth, 0f, _trackStripStep, _level.TrackMaterial);
-            CreateStrip("Surround", _surroundHalfWidth, _surroundYOffset, _surroundStripStep, _level.SurroundMaterial);
+            CreateStrip("Track", Profile.HalfWidth, 0f, _ground.TrackStripStep, _level.TrackMaterial);
+            CreateStrip("Surround", _ground.SurroundHalfWidth, _ground.SurroundYOffset, _ground.SurroundStripStep, _level.SurroundMaterial);
         }
 
         private void CreateStrip(string stripName, float halfWidth, float yOffset, float zStep, Material material)
         {
-            int rows = Mathf.CeilToInt(Profile.Length / zStep) + 1;
+            float startZ = -_ground.ExtraBehind;
+            float endZ = Profile.Length + _ground.ExtraAhead;
+            int rows = Mathf.CeilToInt((endZ - startZ) / zStep) + 1;
             var vertices = new Vector3[rows * kVerticesPerRow];
             var uvs = new Vector2[rows * kVerticesPerRow];
             var triangles = new int[(rows - 1) * kIndicesPerQuad];
 
             for (int i = 0; i < rows; i++)
             {
-                float z = Mathf.Min(i * zStep, Profile.Length);
+                float z = Mathf.Min(startZ + i * zStep, endZ);
                 float y = Profile.HeightAt(z) + yOffset;
                 int left = i * kVerticesPerRow, right = left + 1;
                 vertices[left] = new Vector3(-halfWidth, y, z);
                 vertices[right] = new Vector3(halfWidth, y, z);
-                uvs[left] = new Vector2(-halfWidth / _uvTileSize, z / _uvTileSize);
-                uvs[right] = new Vector2(halfWidth / _uvTileSize, z / _uvTileSize);
+                uvs[left] = new Vector2(-halfWidth / _ground.UvTileSize, z / _ground.UvTileSize);
+                uvs[right] = new Vector2(halfWidth / _ground.UvTileSize, z / _ground.UvTileSize);
             }
 
             for (int i = 0; i < rows - 1; i++)
@@ -310,17 +263,17 @@ namespace CrazyLabs.Gameplay.Modules
 
         private async UniTask SpawnProps(System.Random rng)
         {
-            float lastZ = Profile.FinishZ - _propsStopBeforeFinish;
-            float z = _firstSpawnZ;
+            float lastZ = Profile.FinishZ - _spawn.PropsStopBeforeFinish;
+            float z = _spawn.FirstSpawnZ;
 
             while (z < lastZ)
             {
                 double roll = rng.NextDouble();
-                if (roll < _crashChance)
+                if (roll < _level.CrashChance)
                 {
                     await SpawnObstacleGroup(_crashObstacles, z, rng);
                 }
-                else if (roll < _crashChance + _slowChance)
+                else if (roll < _level.CrashChance + _level.SlowChance)
                 {
                     await SpawnObstacleGroup(_slowObstacles, z, rng);
                 }
@@ -329,7 +282,7 @@ namespace CrazyLabs.Gameplay.Modules
                     await SpawnCollectibleRow(z, rng);
                 }
                 
-                z += Mathf.Lerp(_spawnSpacing.x, _spawnSpacing.y, (float)rng.NextDouble());
+                z += Mathf.Lerp(_spawn.SpawnSpacing.x, _spawn.SpawnSpacing.y, (float)rng.NextDouble());
             }
 
             await SpawnScenery(rng);
@@ -342,14 +295,14 @@ namespace CrazyLabs.Gameplay.Modules
                 return;
             }
 
-            int count = rng.NextDouble() < _pairChance ? 2 : 1;
-            float usable = Profile.HalfWidth - _laneEdgeMargin;
+            int count = rng.NextDouble() < _level.PairChance ? 2 : 1;
+            float usable = Profile.HalfWidth - _spawn.LaneEdgeMargin;
             float firstX = Mathf.Lerp(-usable, usable, (float)rng.NextDouble());
             await PlaceObstacle(prefabs[rng.Next(prefabs.Length)], firstX, z, rng);
 
             if (count == 2)
             {
-                float gap = Between(rng, _pairGap);
+                float gap = Between(rng, _spawn.PairGap);
                 float secondX = firstX > 0f ? firstX - gap : firstX + gap;
                 if (Mathf.Abs(secondX) <= usable)
                 {
@@ -365,18 +318,18 @@ namespace CrazyLabs.Gameplay.Modules
                 return;
             }
 
-            float usable = Profile.HalfWidth - _laneEdgeMargin;
+            float usable = Profile.HalfWidth - _spawn.LaneEdgeMargin;
             float laneX = Mathf.Lerp(-usable, usable, (float)rng.NextDouble());
-            float sway = rng.NextDouble() < _swayChance ? Between(rng, _swayAmount) : 0f;
+            float sway = rng.NextDouble() < _spawn.SwayChance ? Between(rng, _spawn.SwayAmount) : 0f;
 
-            for (int i = 0; i < _collectiblesPerRow; i++)
+            for (int i = 0; i < _spawn.CollectiblesPerRow; i++)
             {
-                float rowZ = z + i * _collectibleSpacing;
-                float x = Mathf.Clamp(laneX + Mathf.Sin(i * _swayFrequency) * sway, -usable, usable);
+                float rowZ = z + i * _spawn.CollectibleSpacing;
+                float x = Mathf.Clamp(laneX + Mathf.Sin(i * _spawn.SwayFrequency) * sway, -usable, usable);
 
                 var collectible = await _collectiblePool.GetAsync();
                 collectible.transform.SetParent(_propsRoot, false);
-                collectible.transform.SetPositionAndRotation(GroundPoint(x, rowZ, _collectibleHeight), Quaternion.identity);
+                collectible.transform.SetPositionAndRotation(GroundPoint(x, rowZ, _spawn.CollectibleHeight), Quaternion.identity);
                 collectible.Init();
                 _collectibles.Add(collectible);
             }
@@ -389,10 +342,10 @@ namespace CrazyLabs.Gameplay.Modules
                 return;
             }
 
-            for (float z = 0f; z < Profile.Length; z += _sceneryDensity * Between(rng, _scenerySpacingJitter))
+            for (float z = -_ground.ExtraBehind; z < Profile.Length + _ground.ExtraAhead; z += _spawn.SceneryDensity * Between(rng, _spawn.ScenerySpacingJitter))
             {
                 float side = rng.NextDouble() < kCoinFlip ? -1f : 1f;
-                float x = side * (Profile.HalfWidth + _sceneryMinDistance + Between(rng, 0f, _sceneryExtraDistance));
+                float x = side * (Profile.HalfWidth + _spawn.SceneryMinDistance + Between(rng, 0f, _spawn.SceneryExtraDistance));
                 var prefab = _scenery[rng.Next(_scenery.Length)];
 
                 if (!_sceneryPools.TryGetValue(prefab, out var pool))
@@ -402,7 +355,7 @@ namespace CrazyLabs.Gameplay.Modules
 
                 var instance = await pool.GetAsync();
                 Place(instance, x, z, rng);
-                instance.localScale = _sceneryBaseScales[prefab] * Between(rng, _sceneryScaleRange);
+                instance.localScale = _sceneryBaseScales[prefab] * Between(rng, _spawn.SceneryScaleRange);
             }
         }
 
@@ -421,7 +374,7 @@ namespace CrazyLabs.Gameplay.Modules
         private void Place(Transform instance, float x, float z, System.Random rng)
         {
             float slopeDegrees = Profile.PitchAt(z) * Mathf.Rad2Deg;
-            var rotation = Quaternion.Euler(slopeDegrees, 0f, 0f) * Quaternion.Euler(0f, Between(rng, -_propYawRange, _propYawRange), 0f);
+            var rotation = Quaternion.Euler(slopeDegrees, 0f, 0f) * Quaternion.Euler(0f, Between(rng, -_spawn.PropYawRange, _spawn.PropYawRange), 0f);
             instance.SetParent(_propsRoot, false);
             instance.SetPositionAndRotation(GroundPoint(x, z, 0f), rotation);
         }
@@ -441,42 +394,16 @@ namespace CrazyLabs.Gameplay.Modules
             return Between(rng, range.x, range.y);
         }
 
-        private void BuildFinishLine()
+        private void PlaceSlingshot(SlingshotTuningData tuning)
         {
-            var settings = _finishLine;
-            float z = Profile.FinishZ;
-            float width = Profile.HalfWidth * 2f;
-
-            var root = new GameObject("Finish Line");
-            root.transform.SetParent(_generated, false);
-            root.transform.position = new(0f, Profile.HeightAt(z), z);
-
-            var postSize = new Vector3(settings.PostThickness, settings.PostHeight, settings.PostThickness);
-            float postCenterY = settings.PostHeight * 0.5f;
-            AddPart(root.transform, PrimitiveType.Cube, "Post L", new Vector3(-Profile.HalfWidth, postCenterY, 0f), postSize);
-            AddPart(root.transform, PrimitiveType.Cube, "Post R", new Vector3(Profile.HalfWidth, postCenterY, 0f), postSize);
-            AddPart(root.transform, PrimitiveType.Cube, "Banner", new Vector3(0f, settings.PostHeight - settings.BannerDrop, 0f),
-                new Vector3(width, settings.BannerHeight, settings.BannerThickness));
-
-            var trigger = root.AddComponent<BoxCollider>();
-            trigger.isTrigger = true;
-            trigger.center = new Vector3(0f, settings.TriggerHeight * 0.5f, 0f);
-            trigger.size = new Vector3(width, settings.TriggerHeight, settings.TriggerDepth);
-            root.AddComponent<FinishLine>();
+            float z = tuning.StartZ + tuning.PostForwardOffset;
+            _slingshot.Place(new Vector3(0f, Profile.HeightAt(z), z), Quaternion.Euler(Profile.PitchAt(z) * Mathf.Rad2Deg, 0f, 0f));
         }
 
-        private void AddPart(Transform parent, PrimitiveType type, string partName, Vector3 localPosition, Vector3 scale)
+        private void PlaceFinishLine()
         {
-            var part = GameObject.CreatePrimitive(type);
-            part.name = partName;
-            Destroy(part.GetComponent<Collider>());
-            part.transform.SetParent(parent, false);
-            part.transform.localPosition = localPosition;
-            part.transform.localScale = scale;
-            if (_finishMaterial != null)
-            {
-                part.GetComponent<Renderer>().sharedMaterial = _finishMaterial;
-            }
+            float z = Profile.FinishZ;
+            _finish.Place(new Vector3(0f, Profile.HeightAt(z), z), Profile.HalfWidth * 2f);
         }
     }
 }

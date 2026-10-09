@@ -6,6 +6,7 @@ namespace CrazyLabs.Gameplay.Controls
     {
         public bool Active;
         public bool Down, Held, Up;
+        public bool OverUI;
         public Vector2 Position;
     }
 

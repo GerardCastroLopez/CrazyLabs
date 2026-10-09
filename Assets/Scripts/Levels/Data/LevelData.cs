@@ -13,6 +13,7 @@ namespace CrazyLabs.Levels.Data
         public Material TrackMaterial,  SurroundMaterial;
         public Color SkyColor, AmbientColor, SunColor;
         public float FogStart, FogEnd;
+        [Range(0f, 1f)] public float CrashChance = 0.3f, SlowChance = 0.25f, PairChance = 0.35f;
         public GameObject[] CrashObstacles, SlowObstacles, Scenery;
         public GameObject AmbientEffect;
     }

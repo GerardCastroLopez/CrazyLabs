@@ -28,7 +28,7 @@ namespace CrazyLabs.Upgrades
             }
 
             _playerData.Currency.Value -= cost.Value;
-            _playerData.UpgradeLevels.GetOrAdd(u => u.Type == upgradeType, () => new() { Type = upgradeType }).Level.Value++;
+                _playerData.UpgradeLevels.GetOrAdd(u => u.Type == upgradeType, () => new() { Type = upgradeType }).Level.Value++;
             
             EventDispatcher.Raise(new UpgradePurchasedEvent(upgradeType));
             

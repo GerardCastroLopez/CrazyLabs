@@ -20,23 +20,23 @@ MonoBehaviour:
       FinishRunout: 30
       Sections:
       - Length: 80
-        PitchDegrees: 13
+        PitchDegrees: 19.5
       - Length: 80
+        PitchDegrees: 13.5
+      - Length: 40
+        PitchDegrees: 4.5
+      - Length: 100
+        PitchDegrees: 18
+      - Length: 60
         PitchDegrees: 9
       - Length: 40
         PitchDegrees: 3
-      - Length: 100
-        PitchDegrees: 12
-      - Length: 60
-        PitchDegrees: 6
-      - Length: 40
-        PitchDegrees: 2
       - Length: 120
-        PitchDegrees: 13
-      - Length: 100
-        PitchDegrees: 8
+        PitchDegrees: 19.5
       - Length: 100
         PitchDegrees: 12
+      - Length: 100
+        PitchDegrees: 18
     TrackMaterial: {fileID: 2100000, guid: 19679f8f071114b1caf7b44d720bee1f, type: 2}
     SurroundMaterial: {fileID: 2100000, guid: b4ee4d2d8ad6d4fe5b10fcc4f15df9f0, type: 2}
     SkyColor: {r: 0.62, g: 0.82, b: 0.98, a: 1}
@@ -44,6 +44,9 @@ MonoBehaviour:
     SunColor: {r: 1, g: 0.97, b: 0.85, a: 1}
     FogStart: 70
     FogEnd: 230
+    CrashChance: 0.3
+    SlowChance: 0.25
+    PairChance: 0.35
     CrashObstacles:
     - {fileID: 4462713487559767501, guid: 5da80b9ec89f42febca4f3a2c08f11c0, type: 3}
     - {fileID: 1618891617458459765, guid: f0aeb18e152042a3ad0d3022bbc621e3, type: 3}

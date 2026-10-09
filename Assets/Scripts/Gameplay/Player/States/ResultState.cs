@@ -18,7 +18,15 @@ namespace CrazyLabs.Gameplay.Player.States
 
         public UniTask Enter()
         {
-            _player.Sled.Stop();
+            if (Result.Outcome == eRunOutcome.Crashed)
+            {
+                _player.Sled.StopImmediately();
+            }
+            else
+            {
+                _player.Sled.Stop();
+            }
+
             _player.BankRewards();
             _player.OnRunEnded(Result);
             return UniTask.CompletedTask;

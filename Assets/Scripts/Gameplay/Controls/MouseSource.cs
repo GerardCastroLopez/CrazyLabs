@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace CrazyLabs.Gameplay.Controls
 {
@@ -15,6 +16,7 @@ namespace CrazyLabs.Gameplay.Controls
                 Down = down,
                 Held = held,
                 Up = up,
+                OverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(),
                 Position = Input.mousePosition,
             };
         }

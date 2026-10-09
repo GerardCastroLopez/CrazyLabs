@@ -40,11 +40,14 @@ MonoBehaviour:
     MinimumPullToFire: 0.12
     PostForwardOffset: 1.2
     PouchHeight: 0.9
+    MaxAimHeadingDegrees: 18
+    MaxAimSideMeters: 0.8
   CameraRig:
     Offset: {x: 0, y: 4.2, z: -8.5}
     LookAhead: {x: 0, y: 0.8, z: 7}
     FollowSmoothTime: 0.18
     LateralFollowFactor: 0.5
+    PitchFollowFactor: 1
     BaseFov: 55
     MaxFovBoost: 14
     FovLerpSpeed: 3
@@ -105,3 +108,32 @@ MonoBehaviour:
     ConfettiHeight: 7
     TrailLocalPosition: {x: 0, y: 0.15, z: -0.6}
     TrailIntensity: {x: 0.25, y: 1.6}
+  Flow:
+    ResultPopupDelay: 1.5
+  Ground:
+    ExtraBehind: 150
+    ExtraAhead: 150
+    TrackStripStep: 2
+    SurroundStripStep: 6
+    SurroundHalfWidth: 90
+    SurroundYOffset: -0.06
+    UvTileSize: 6
+  Spawn:
+    CollectiblePrefab: {fileID: 1532708325353723183, guid: 4eb6549e0eb440c297450571544f0ce0, type: 3}
+    FirstSpawnZ: 55
+    PropsStopBeforeFinish: 30
+    SpawnSpacing: {x: 11, y: 19}
+    LaneEdgeMargin: 1.5
+    PropYawRange: 25
+    PairGap: {x: 5, y: 8}
+    SwayChance: 0.5
+    SwayAmount: {x: 0.6, y: 1.4}
+    SwayFrequency: 0.9
+    CollectiblesPerRow: 6
+    CollectibleSpacing: 2.4
+    CollectibleHeight: 0.9
+    SceneryDensity: 9
+    ScenerySpacingJitter: {x: 0.6, y: 1.4}
+    SceneryMinDistance: 2
+    SceneryExtraDistance: 14
+    SceneryScaleRange: {x: 0.8, y: 1.5}

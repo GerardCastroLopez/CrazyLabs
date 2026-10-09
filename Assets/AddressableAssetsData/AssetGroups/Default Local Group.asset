@@ -17,6 +17,16 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 7cafb31fea5bb4b3b9416b1e8e53f434
   m_SerializeEntries:
+  - m_GUID: 01ce74821b7c41638dcff9fbcc3ccf58
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_LouvreCart.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c435ef90833408fac6c4365a9f48c52
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_Obelisk.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0d12db7fd58ed45bcbfee6b8046e1d4d
     m_Address: Prefabs/Characters/Char_Alix
     m_ReadOnly: 0
@@ -37,8 +47,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 351f3fde2d934178a019908f707e70b6
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_Sarcophagus.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 374fc08e9232042899774477fc6bd0b2
     m_Address: Prefabs/GameplayView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3dab2ae21c854f2f8be0d00b04c8474d
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_Sphinx.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -47,13 +67,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49869179bc994e70910820a8437cfc7e
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_Bomb.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 593a99522ad1f4695bb25041b0755c32
     m_Address: Prefabs/Characters/Char_CosmoBug
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69f1e87087ea4fd0a17c6c854250efb8
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_Tomb.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6ad726b7a53c24ed393389cb63d90f7a
-    m_Address: Prefabs/GameplayUIView
+    m_Address: UI/Prefabs/GameplayUIView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -72,18 +102,63 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 95f7f156cb0f1467c92d2dd11d584fff
+    m_Address: UI/Prefabs/ResultView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a1be9ecc727d428499ca8aa1a346057
-    m_Address: Prefabs/MainMenuView
+    m_Address: UI/Prefabs/MainMenuView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4c79203adb14dceb7eee75a9adc7f4b
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_Fence.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a899bc0cf72e4df1893be7878ff2c737
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_RoundBush.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b11ad6a5ed444998a26a30cf0d142240
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_SquareBush.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf30064fb381431fbcacfbc8352c455a
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_Easel.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5324c774eba491eaa93046741653920
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_BushFence.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d9f3941ea80744627874f1fe8edcdd2b
-    m_Address: Prefabs/PopupBackground
+    m_Address: UI/Prefabs/PopupBackground
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e06cf5fee2e4b409aaae08746b03ffcf
+    m_Address: UI/Prefabs/PausePopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e3f9e284091d54c2bb51375e9c43ed28
     m_Address: Prefabs/Characters/Char_Alya
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5a36272058d419288a94941933e5500
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_CatStatue.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0aeb18e152042a3ad0d3022bbc621e3
+    m_Address: Assets/Assets/Levels/Obstacles/Obstacle_StoneBall.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

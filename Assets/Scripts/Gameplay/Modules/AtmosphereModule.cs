@@ -33,6 +33,14 @@ namespace CrazyLabs.Gameplay.Modules
             }
         }
 
+        public void Dispose()
+        {
+            if (_ambientEffect)
+            {
+                Object.Destroy(_ambientEffect);
+            }
+        }
+
         public void Tick()
         {
             if (_ambientEffect != null && _followTarget != null)

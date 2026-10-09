@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace CrazyLabs.Gameplay.Controls
 {
@@ -19,6 +20,7 @@ namespace CrazyLabs.Gameplay.Controls
                 Down = touch.phase == TouchPhase.Began,
                 Held = !ended,
                 Up = ended,
+                OverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(touch.fingerId),
                 Position = touch.position,
             };
         }

@@ -1,4 +1,3 @@
-using System;
 using CrazyLabs.Gameplay.Config;
 using gSDK;
 using UnityEngine;
@@ -13,6 +12,7 @@ namespace CrazyLabs.Gameplay.Controls
 
         private Vector2 _lastPosition;
         private float _maxDistanceFromPress;
+        private bool _pressBlocked;
 
         public bool PointerDown { get; private set; }
         public bool PointerHeld { get; private set; }
@@ -76,6 +76,18 @@ namespace CrazyLabs.Gameplay.Controls
             PointerUp = sample.Up;
             PointerTap = false;
             PointerDelta = Vector2.zero;
+
+            if (sample.Active && sample.Down && sample.OverUI)
+            {
+                _pressBlocked = true;
+            }
+
+            if (_pressBlocked)
+            {
+                PointerDown = PointerHeld = PointerUp = false;
+                _pressBlocked = sample.Active && !sample.Up;
+                return;
+            }
 
             if (!sample.Active)
             {

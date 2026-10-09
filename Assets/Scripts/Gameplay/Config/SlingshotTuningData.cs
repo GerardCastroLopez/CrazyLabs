@@ -10,5 +10,7 @@ namespace CrazyLabs.Gameplay.Config
         public float MinimumPullToFire = 0.12f;
         public float PostForwardOffset = 1.2f;
         public float PouchHeight = 0.9f;
+        public float MaxAimHeadingDegrees = 18f;
+        public float MaxAimSideMeters = 0.8f;
     }
 }

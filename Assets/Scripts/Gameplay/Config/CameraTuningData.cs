@@ -10,6 +10,7 @@ namespace CrazyLabs.Gameplay.Config
         public Vector3 LookAhead = new(0f, 0.8f, 7f);
         public float FollowSmoothTime = 0.18f;
         public float LateralFollowFactor = 0.5f;
+        [Range(0f, 1f)] public float PitchFollowFactor = 1f;
         public float BaseFov = 55f;
         public float MaxFovBoost = 14f;
         public float FovLerpSpeed = 3f;

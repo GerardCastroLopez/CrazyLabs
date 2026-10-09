@@ -13,6 +13,7 @@ namespace CrazyLabs.Gameplay.Feedback
 
         private int _lastFemaleVoice = -1;
         private int _lastMaleVoice = -1;
+        private float _slideAllowedAt;
 
 
         public AudioModule(AudioSource effects, AudioSource slideLoop, AudioTuningData tuning)
@@ -31,11 +32,13 @@ namespace CrazyLabs.Gameplay.Feedback
 
         public void Tick(bool sliding, float speedNormalized)
         {
-            if (sliding && !_slideLoop.isPlaying)
+            bool canSlide = sliding && Time.time >= _slideAllowedAt;
+
+            if (canSlide && !_slideLoop.isPlaying)
             {
                 _slideLoop.Play();
             }
-            else if (!sliding && _slideLoop.isPlaying)
+            else if (!canSlide && _slideLoop.isPlaying)
             {
                 _slideLoop.Stop();
             }
@@ -46,6 +49,7 @@ namespace CrazyLabs.Gameplay.Feedback
         public void Handle(RunLaunchedEvent evt)
         {
             Play(_tuning.Launch);
+            _slideAllowedAt = Time.time + (_tuning.Launch ? _tuning.Launch.length : 0f);
         }
 
         public void Handle(CollectibleCollectedEvent evt)

@@ -50,7 +50,7 @@ namespace CrazyLabs.Gameplay.Sled
             UpdatePose();
         }
 
-        public void SetPullback(float meters)
+        public void SetPullback(float meters, float sideMeters, float headingRadians)
         {
             if (_phase != ePhase.Parked || _profile == null)
             {
@@ -58,18 +58,26 @@ namespace CrazyLabs.Gameplay.Sled
             }
 
             _z = _startZ - meters;
+            _x = sideMeters;
+            _heading = headingRadians;
             UpdatePose();
         }
 
         public void Launch(float launchSpeed)
         {
             _speed = launchSpeed;
-            _heading = _turnRate = _slideTime = 0f;
+            _turnRate = _slideTime = 0f;
             _phase = ePhase.Sliding;
         }
 
         public void Stop()
         {
+            _phase = ePhase.Stopping;
+        }
+
+        public void StopImmediately()
+        {
+            _speed = _turnRate = 0f;
             _phase = ePhase.Stopping;
         }
 

@@ -37,14 +37,17 @@ namespace CrazyLabs.Gameplay.Player.States
             else if (inputs.PointerHeld)
             {
                 float fullDrag = _player.Config.Controls.VerticalDragFullFraction;
-                slingshot.SetPull(-inputs.DragFromPressNormalized.y / fullDrag);
+                var drag = inputs.DragFromPressNormalized;
+                slingshot.SetPull(-drag.y / fullDrag);
+                slingshot.SetAim(-drag.x / _player.Config.Controls.HorizontalDragFullFraction);
             }
             else if (inputs.ActionHeld)
             {
                 slingshot.Charge(Time.deltaTime);
+                slingshot.SetAim(inputs.Horizontal);
             }
 
-            _player.Sled.SetPullback(slingshot.PullbackMeters);
+            _player.Sled.SetPullback(slingshot.PullbackMeters, slingshot.PouchSideMeters, slingshot.AimHeadingRadians);
         }
 
         public UniTask Exit()

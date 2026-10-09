@@ -22,7 +22,7 @@ namespace CrazyLabs.MainMenu
         private readonly LevelService _levelService;
         
         
-        public MainMenuController(Action onPlay, PlayerService playerService, LevelService levelService, UIService uiService) : base("Prefabs/MainMenuView", 0, false, uiService)
+        public MainMenuController(Action onPlay, PlayerService playerService, LevelService levelService, UIService uiService) : base("UI/Prefabs/MainMenuView", 0, false, uiService)
         {
             _onPlay = onPlay;
             _playerService = playerService;
