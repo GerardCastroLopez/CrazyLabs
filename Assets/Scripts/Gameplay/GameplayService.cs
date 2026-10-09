@@ -1,4 +1,5 @@
 using System;
+using CrazyLabs.Audio;
 using CrazyLabs.Gameplay.Config;
 using CrazyLabs.Gameplay.Player;
 using CrazyLabs.Gameplay.UI;
@@ -19,6 +20,7 @@ namespace CrazyLabs.Gameplay
         private PauseController _pauseController;
         private ResultController _resultController;
         private MainMenuService _mainMenuService;
+        private MusicService _musicService;
         private UIService _uiService;
         private int _runVersion;
         
@@ -45,6 +47,7 @@ namespace CrazyLabs.Gameplay
             base.Init();
 
             _mainMenuService = _locator.GetService<MainMenuService>();
+            _musicService = _locator.GetService<MusicService>();
         }
 
         public void StartGame(Action onLoadingShown)
@@ -56,6 +59,7 @@ namespace CrazyLabs.Gameplay
         {
             _runVersion++;
             await UniTask.WhenAll(_uiService.AsyncToggleLoading(true, true), _gameplayController.CacheView(), _uiController.CacheView(), _pauseController.CacheView(), _resultController.CacheView());
+            _musicService.Play(_gameplayController.Level.Music);
             onLoadingShown?.Invoke();
             await UniTask.WhenAll(_uiService.AsyncToggleLoading(false, true), _gameplayController.ShowView(false));
             await _uiController.ShowView(true);

@@ -58,3 +58,4 @@ MonoBehaviour:
     Scenery:
     - {m_AssetGUID: bf196eaec6b424f8c91ed23c71d4396e, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
     AmbientEffect: {m_AssetGUID: , m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    Music: {m_AssetGUID: 33f465989839249498e5fc9ff8f8df3f, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}

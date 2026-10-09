@@ -17,5 +17,6 @@ namespace CrazyLabs.Levels.Data
         [Range(0f, 1f)] public float CrashChance = 0.3f, SlowChance = 0.25f, PairChance = 0.35f;
         public AssetReferenceGameObject[] CrashObstacles, SlowObstacles, Scenery;
         public AssetReferenceGameObject AmbientEffect;
+        public AssetReferenceT<AudioClip> Music;
     }
 }

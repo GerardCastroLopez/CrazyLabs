@@ -49,7 +49,7 @@ namespace CrazyLabs.Gameplay.Feedback
         public void Handle(RunLaunchedEvent evt)
         {
             Play(_tuning.Launch);
-            _slideAllowedAt = Time.time + (_tuning.Launch ? _tuning.Launch.length : 0f);
+            _slideAllowedAt = Time.time + Mathf.Max(_tuning.Launch ? _tuning.Launch.length : 0f, evt.AnimationSeconds);
         }
 
         public void Handle(CollectibleCollectedEvent evt)

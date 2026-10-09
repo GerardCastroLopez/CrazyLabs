@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CrazyLabs.Gameplay.Events;
+using CrazyLabs.UI;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using gSDK.EventSystem;
@@ -11,6 +12,8 @@ namespace CrazyLabs.Gameplay.UI
 {
     public class GameplayUIView : BaseView<GameplayUIController>, IEventHandler<CollectibleCollectedEvent>
     {
+        [SerializeField] private CanvasGroup _canvasGrp;
+        [SerializeField] private TweenValues _showTween, _hideTween;
         [SerializeField] TMP_Text _currencyTxt, _distanceTxt, _speedTxt;
         [SerializeField] GameObject _aimHint;
         [SerializeField] TMP_Text _pickupText;
@@ -32,14 +35,31 @@ namespace CrazyLabs.Gameplay.UI
 
         protected override UniTask InternalShow(bool animate)
         {
+            DOTween.Kill(this);
+            
+            if (animate)
+            {
+                _canvasGrp.alpha = 0f;
+                return _canvasGrp.DOFade(1f, _showTween.Duration).SetEase(_showTween.Ease).SetId(this).AsyncWaitForCompletion().AsUniTask();
+            }
+            
+            _canvasGrp.alpha = 1f;
             return UniTask.CompletedTask;
         }
 
         protected override UniTask InternalHide(bool animate)
         {
+            DOTween.Kill(this);
+            
+            if (animate)
+            {
+                return _canvasGrp.DOFade(0f, _hideTween.Duration).SetEase(_hideTween.Ease).SetId(this).AsyncWaitForCompletion().AsUniTask();
+            }
+            
+            _canvasGrp.alpha = 0f;
             return UniTask.CompletedTask;
         }
-
+        
         protected override void OnBind()
         {
             base.OnBind();

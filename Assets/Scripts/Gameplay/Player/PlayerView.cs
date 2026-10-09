@@ -139,10 +139,12 @@ namespace CrazyLabs.Gameplay.Player
             _animator.Update(0f);
         }
 
-        internal void PlayLaunch()
+        internal float PlayLaunch()
         {
-            SwapClip(_launchPlaceholder, _controller.Character.LaunchClips, ref _lastLaunch);
+            var clip = SwapClip(_launchPlaceholder, _controller.Character.LaunchClips, ref _lastLaunch);
             PlayAnimation(kLaunch);
+
+            return clip ? clip.length : 0f;
         }
 
         internal void PlayCrash()
@@ -190,15 +192,16 @@ namespace CrazyLabs.Gameplay.Player
             _lastLaunch = _lastCrash = _lastVictory = -1;
         }
 
-        private void SwapClip(AnimationClip placeholder, AnimationClip[] pool, ref int last)
+        private AnimationClip SwapClip(AnimationClip placeholder, AnimationClip[] pool, ref int last)
         {
             if (!_overrides || !placeholder || pool == null || pool.Length == 0)
             {
-                return;
+                return null;
             }
 
             last = RandomIndex.Different(pool.Length, last);
             _overrides[placeholder] = pool[last];
+            return pool[last];
         }
 
         private void PlayAnimation(int trigger)

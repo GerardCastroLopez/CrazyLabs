@@ -56,3 +56,4 @@ MonoBehaviour:
     - {m_AssetGUID: 19d4969e4295c43b5917ada9a826faf1, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
     - {m_AssetGUID: a8f1fc1bfc240434797852a558dfbf5b, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
     AmbientEffect: {m_AssetGUID: e1e3d990e821947e8b332a2033f25702, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    Music: {m_AssetGUID: 576a2dbd53e044f01b617d067748b165, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}

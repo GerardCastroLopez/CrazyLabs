@@ -44,7 +44,7 @@ Costs grow geometrically per level. All values live in `Assets/Configs/Upgrades/
 ### Content
 
 - **3 levels**: Sunny Park, Snowy Park, Louvre. Each has its own layout, materials, obstacles, scenery, fog and sky.
-- **9 playable heroes**: Ladybug, Marinette, Alix, Alya, Chloe, Kagami, Queen Bee, Viperion, Cosmo Bug. The transformation sound plays when you select one, and the voice (Ladybug or Adrien) follows the hero's gender when a run is lost.
+- **8 playable heroes**: Ladybug, Marinette, Alix, Alya, Chloe, Kagami, Viperion, Cosmo Bug. The transformation sound plays when you select one, and the voice (Ladybug or Adrien) follows the hero's gender when a run is lost.
 - **Feedback and polish**
   - Camera: shake (small on slow hits, large on crash), a FOV kick on launch, and a follow that tilts with the slope.
   - Effects: slide dust, a dust puff on launch, pick-up, hit, crash and finish particles, and speed lines that appear as the sled gets faster.
@@ -121,7 +121,6 @@ Assets/Configs/
 
 ## Possible improvements
 
-- **Music:** background music in the main menu and one track per level. The pack has no music, so it needs extra tracks.
 - **Obstacle effects:** a dedicated VFX for each obstacle type when the sled crashes into it, instead of one shared crash effect.
 - **Snow level variety:** more kinds of obstacles in the snow level, which has the fewest.
 - **Art and animation:** better animations and level assets, including the slingshot and the finish line, which are currently simple models.

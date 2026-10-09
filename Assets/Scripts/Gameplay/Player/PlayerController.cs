@@ -94,9 +94,9 @@ namespace CrazyLabs.Gameplay.Player
         {
             _runActive = true;
             Sled.Launch(_stats.LaunchSpeedForPull(pullStrength));
-            View.PlayLaunch();
+            float animationSeconds = View.PlayLaunch();
             View.Bump(Config.RideFeel.LaunchKick);
-            EventDispatcher.Raise(new RunLaunchedEvent());
+            EventDispatcher.Raise(new RunLaunchedEvent(animationSeconds));
             _stateMachine.ChangeState<RunningState>();
         }
 

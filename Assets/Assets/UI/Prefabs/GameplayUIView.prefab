@@ -1217,6 +1217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3538695463460107579}
   - component: {fileID: 9049502153396293091}
+  - component: {fileID: -3497897984885075095}
   m_Layer: 0
   m_Name: GameplayUIView
   m_TagString: Untagged
@@ -1264,11 +1265,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e102df3aecb64791b2e3009a6513fd50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGrp: {fileID: -3497897984885075095}
+  _showTween:
+    Duration: 0
+    Ease: 0
+  _hideTween:
+    Duration: 0
+    Ease: 0
   _currencyTxt: {fileID: 3726934885599372522}
   _distanceTxt: {fileID: 865383482960543653}
   _speedTxt: {fileID: 2922298472156961182}
   _aimHint: {fileID: 939200151223829372}
   _pickupText: {fileID: 6360210780362917503}
+--- !u!225 &-3497897984885075095
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8006339077438342639}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8170263128805757629
 GameObject:
   m_ObjectHideFlags: 0

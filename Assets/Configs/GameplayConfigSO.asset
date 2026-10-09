@@ -91,6 +91,9 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 50fef8d54f8032642a52fab5486ae16c, type: 3}
     - {fileID: 8300000, guid: 3ae19ecf3ed868345bb13a8c19b7526b, type: 3}
     SlideLoopMaxVolume: 1
+    MenuMusic: {m_AssetGUID: 433d801333a0a435d9cae64227cd17ef, m_SubObjectName: , m_SubObjectType: , m_EditorAssetChanged: 0}
+    MusicVolume: 0.6
+    MusicFadeSeconds: 1
   Effects:
     PickupEffect:
       m_AssetGUID: 3015ed8dfa77d4550aad4a467429bd1c

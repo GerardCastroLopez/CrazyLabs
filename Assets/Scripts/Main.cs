@@ -1,3 +1,4 @@
+using CrazyLabs.Audio;
 using CrazyLabs.Gameplay;
 using CrazyLabs.Levels;
 using CrazyLabs.MainMenu;
@@ -40,6 +41,7 @@ namespace CrazyLabs
             locator.RegisterService<ISaveData>(new DefaultSaveData());
             
             // game-specific services
+            locator.RegisterService(new MusicService());
             locator.RegisterService(new PlayerService());
             locator.RegisterService(new MainMenuService());
             locator.RegisterService(new LevelService());
