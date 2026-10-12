@@ -55,7 +55,9 @@ Costs grow geometrically per level. All values live in `Assets/Configs/Upgrades/
 
 ## Architecture
 
-MVC on top of gSDK. Unity is used as little as possible: there is one `Update`, in `GameplayView`, and everything else is ticked from it.
+With a single scene, everything starts from the Main component. The tree-based architecture, in which a class receives all the dependencies in the constructor, clashes drastically with the component-based Unity architecture, but also provides much more control. Usually we would register all required services and configurations in the Locator, which would ensure escalability of features. The architecture relies heavily on dependency injection.
+
+MVC on top of a custom gSDK package i've done over some time that wraps up useful and common functionality following the SOLID principles. Unity is used as little as possible: there is one `Update`, in `GameplayView`, and everything else is ticked from it.
 
 ```
 Main (MonoBehaviour)          registers configs + services in a Locator
